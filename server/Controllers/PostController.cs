@@ -2,14 +2,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
-    public class PostController : Controller
+    /// <summary>
+    /// Post Controller
+    /// </summary>
+    public class PostController : BaseController
     {
-        // GET: /api/post
+        /// <summary>
+        /// Get A List of Post
+        /// </summary>
         [HttpGet]
-        public ActionResult<string> Index()
-        {
-            return "Index";
-        }
+        public ActionResult<string> Index() { return "A list"; }
+
+        /// <summary>
+        /// Get a Post
+        /// </summary>
+        /// <param name="id">Post Id</param>
+        [HttpGet("{id:int}")]
+        public ActionResult<string> Item(int id) { return "An item"; }
+
+        /// <summary>
+        /// Create a new Post
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<string> Post() { return "Post"; }
     }
 }
