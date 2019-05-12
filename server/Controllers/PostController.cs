@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using Realms;
+using server.Businesses;
 using server.Models;
 
 namespace server.Controllers
@@ -20,18 +21,14 @@ namespace server.Controllers
     )]
     public class PostController : BaseController
     {
-        private Realm realm => Realm.GetInstance();
-        private IQueryable<Post> list => realm.All<Post>();
-        private int nextId => list.Count() == 0 ? 1 : list.AsEnumerable().Max(p => p.Id) + 1;
-
         /// <summary>
-        /// Trả về một danh sách các bài viết
+        /// Lấy danh sách các bài viết
         /// </summary>
         [HttpGet]
-        public ActionResult<List<Post>> Index() => list.ToList();
+        public ActionResult<List<Post>> Index() => PostBusiness.List.ToList();
 
         /// <summary>
-        /// Lấy một bài đăng
+        /// Lấy một bài viết
         /// </summary>
         /// <param name="id">Id bài viết</param>
         /// <response code="200">Tìm thấy</response>
@@ -39,28 +36,19 @@ namespace server.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public ActionResult<Post> Item(int id)
-        {
-            var post = realm.Find<Post>(id);
-            if (post == null) return NotFound("Item not found");
-            return post;
-        }
+        public ActionResult<Post> Item(int id) => PostBusiness.Get(id);
 
         /// <summary>
-        /// Đăng một bài viết mới, và trả về bài viết đó
+        /// Đăng một bài viết mới
         /// </summary>
+        /// <param name="post">Nội dung một bài đăng</param>
         /// <response code="201">Thành công</response>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(Post), StatusCodes.Status201Created)]
         [HttpPost]
-        public async Task<ActionResult<Post>> Post()
+        public async Task<ActionResult<Post>> Post([FromBody] Post post)
         {
-            var post = new Post()
-            {
-                Id = nextId,
-                Content = "Content",
-                Title = " Title",
-                Created = new DateTimeOffset()
-            };
-            await realm.WriteAsync(r => post = r.Add(post));
+            post = await PostBusiness.Add(post);
             return CreatedAtAction(nameof(Post), post);
         }
     }
