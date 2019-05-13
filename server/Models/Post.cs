@@ -1,10 +1,11 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Realms;
+using server.Models.Interface;
 
 namespace server.Models
 {
-    public class Post : RealmObject
+    public class Post : RealmObject, IModelHasId
     {
         /// <summary>Khóa chính - Định danh của một bài đăng</summary>
         [PrimaryKey]

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NJsonSchema;
 using NSwag.AspNetCore;
+using server.DataAccesses.Base;
 
 namespace server
 {
@@ -48,6 +49,7 @@ namespace server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                RealmDatabase.Config.ShouldDeleteIfMigrationNeeded = true;
             }
 
             app.UseSwagger();
