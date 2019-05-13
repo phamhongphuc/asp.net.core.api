@@ -1,5 +1,6 @@
 ﻿using System;
 using server.Models;
+using AutoMapper;
 
 namespace server.DataTransfers.PostDataTransfers
 {
@@ -14,14 +15,6 @@ namespace server.DataTransfers.PostDataTransfers
         public DateTimeOffset Modified { get; set; }
 
         public static implicit operator PostResponse(Post post)
-            => new PostResponse()
-            {
-                Id = post.Id,
-                Title = post.Title,
-                Cover = post.Cover,
-                Content = post.Content,
-                Created = post.Created,
-                Modified = post.Modified
-            };
+            => Mapper.Map<Post, PostResponse>(post);
     }
 }
