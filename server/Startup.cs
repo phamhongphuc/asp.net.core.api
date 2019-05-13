@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 using NJsonSchema;
 using NSwag.AspNetCore;
 using server.DataAccesses.Base;
@@ -30,7 +31,13 @@ namespace server
         {
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options
+                    .SerializerSettings
+                    .Converters
+                    .Add(new StringEnumConverter())
+                );
 
             services.AddSwaggerDocument(config =>
             {
