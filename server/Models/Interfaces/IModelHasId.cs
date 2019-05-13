@@ -1,6 +1,6 @@
 using Realms;
 
-namespace server.Models.Interface
+namespace server.Models.Interfaces
 {
     public interface IModelHasId
     {

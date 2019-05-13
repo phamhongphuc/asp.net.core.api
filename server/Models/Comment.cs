@@ -1,26 +1,19 @@
 using System;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Realms;
-using server.Models.Enums;
 using server.Models.Interfaces;
 
 namespace server.Models
 {
-    public class Post : RealmObject, IModelHasId
+    public class Comment : RealmObject, IModelHasId
     {
         [PrimaryKey]
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Cover { get; set; }
         public string Content { get; set; }
 
         public Account Owner { get; set; }
+        public Post Post { get; set; }
 
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset Modified { get; set; }
-
-        [Backlink(nameof(Comment.Post))]
-        public IQueryable<Comment> Comments { get; }
     }
 }
