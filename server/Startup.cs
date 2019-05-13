@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NJsonSchema;
 using NSwag.AspNetCore;
@@ -14,16 +15,17 @@ using server.DataAccesses.Base;
 
 namespace server
 {
-    /// <summary>
-    /// Startup class
-    /// </summary>
     public class Startup
     {
-        /// <summary>
-        /// This method gets called by the runtime. Use this method to add services to the container.
-        /// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        /// </summary>
-        /// <param name="services" type="IServiceCollection">Service Collection</param>
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRouting(options => { options.LowercaseUrls = true; });
@@ -34,16 +36,14 @@ namespace server
             {
                 config.PostProcess = document =>
                 {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "Sample Web API";
-                    document.Info.Description = "A simple ASP.NET Core web API";
+                    document.Info.Version = Configuration["Swagger:Version"];
+                    document.Info.Title = Configuration["Swagger:Title"];
+                    document.Info.Description = Configuration["Swagger:Description"];
                 };
             });
         }
 
-        /// <summary>
-        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        /// </summary>
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -53,10 +53,8 @@ namespace server
             }
 
             app.UseSwagger();
-            app.UseSwaggerUi3(config =>
-            {
-                config.WithCredentials = true;
-            });
+            app.UseSwaggerUi3(config => { config.WithCredentials = true; });
+            app.UseReDoc(config => config.Path = "/redoc");
 
             app.UseMvc();
         }
