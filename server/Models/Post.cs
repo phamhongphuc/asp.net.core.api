@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Realms;
-using server.Models.Interface;
+using server.Models.Interfaces;
 
 namespace server.Models
 {
