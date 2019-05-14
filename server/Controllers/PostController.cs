@@ -48,10 +48,10 @@ namespace server.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(PostResponse), StatusCodes.Status201Created)]
-        public async Task<ActionResult<PostResponse>> Post([FromBody] Post post)
+        public async Task<ActionResult<PostResponse>> Post([FromBody] PostRequest post)
         {
-            post = await PostBusiness.Add(post);
-            return CreatedAtAction(nameof(Post), (PostResponse)post);
+            var response = await PostBusiness.Add((Post)post);
+            return CreatedAtAction(nameof(Post), (PostResponse)response);
         }
     }
 }

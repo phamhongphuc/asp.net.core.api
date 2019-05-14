@@ -7,13 +7,16 @@ using server.Models;
 
 namespace server.DataTransfers
 {
-    public class BaseDataTransfers<TModel, TData>
-        where TData : BaseDataTransfers<TModel, TData>
+    public class BaseDataTransfers<TSrc, TDes>
+        where TDes : BaseDataTransfers<TSrc, TDes>
     {
-        public static implicit operator BaseDataTransfers<TModel, TData>(TModel model)
-            => Mapper.Map<TModel, TData>(model) as BaseDataTransfers<TModel, TData>;
+        public static implicit operator BaseDataTransfers<TSrc, TDes>(TSrc model)
+            => Mapper.Map<TSrc, TDes>(model) as BaseDataTransfers<TSrc, TDes>;
 
-        public static List<TData> List(IEnumerable<TModel> models)
-            => Mapper.Map<IEnumerable<TModel>, List<TData>>(models);
+        public static explicit operator TSrc(BaseDataTransfers<TSrc, TDes> des)
+            => Mapper.Map<BaseDataTransfers<TSrc, TDes>, TSrc>(des);
+
+        public static List<TDes> List(IEnumerable<TSrc> models)
+            => Mapper.Map<IEnumerable<TSrc>, List<TDes>>(models);
     }
 }
