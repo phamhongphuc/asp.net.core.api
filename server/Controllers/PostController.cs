@@ -26,7 +26,8 @@ namespace server.Controllers
         /// Lấy danh sách các bài viết
         /// </summary>
         [HttpGet]
-        public ActionResult<List<Post>> Index() => PostBusiness.List.ToList();
+        public ActionResult<List<PostResponse>> Index()
+            => PostResponse.List(PostBusiness.List);
 
         /// <summary>
         /// Lấy một bài viết
@@ -45,8 +46,8 @@ namespace server.Controllers
         /// <param name="post">Nội dung một bài đăng</param>
         /// <response code="201">Thành công</response>
         /// <returns></returns>
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status201Created)]
         [HttpPost]
+        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status201Created)]
         public async Task<ActionResult<PostResponse>> Post([FromBody] Post post)
         {
             post = await PostBusiness.Add(post);

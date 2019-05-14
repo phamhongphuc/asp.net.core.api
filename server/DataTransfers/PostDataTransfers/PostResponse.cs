@@ -1,10 +1,12 @@
 ﻿using System;
 using server.Models;
 using AutoMapper;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace server.DataTransfers.PostDataTransfers
 {
-    public class PostResponse
+    public class PostResponse : BaseDataTransfers<Post, PostResponse>
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,8 +15,5 @@ namespace server.DataTransfers.PostDataTransfers
 
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset Modified { get; set; }
-
-        public static implicit operator PostResponse(Post post)
-            => Mapper.Map<Post, PostResponse>(post);
     }
 }
