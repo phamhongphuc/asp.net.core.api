@@ -46,13 +46,32 @@ namespace server.Controllers
         /// </summary>
         /// <param name="post">Nội dung một bài đăng</param>
         /// <response code="201">Thành công</response>
-        /// <returns></returns>
+        /// <response code="400">BadRequest</response>
         [HttpPost]
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PostResponse>> Post([FromBody] PostRequest post)
         {
             var response = await PostBusiness.Add((Post)post);
             return CreatedAtAction(nameof(Post), (PostResponse)response);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<PostResponse>> Update([FromBody] PostUpdateRequest post)
+        {
+            var response = await PostBusiness.Update((Post)post);
+            return (PostResponse)response;
+        }
+
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await PostBusiness.Delete(id);
+            return NoContent();
         }
     }
 }
