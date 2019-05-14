@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +15,7 @@ using NJsonSchema;
 using NSwag.AspNetCore;
 using server.DataAccesses.Base;
 using server.DataTransfers;
+using server.Middleware;
 
 namespace server
 {
@@ -32,6 +33,8 @@ namespace server
         public void ConfigureServices(IServiceCollection services)
         {
             Mapper.Initialize(config => config.AddProfile<MappingProfile>());
+
+            services.AddTransient<ExceptionCatcherMiddleware>();
 
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
@@ -62,6 +65,8 @@ namespace server
                 app.UseDeveloperExceptionPage();
                 RealmDatabase.Config.ShouldDeleteIfMigrationNeeded = true;
             }
+
+            app.UseMiddleware<ExceptionCatcherMiddleware>();
 
             app.UseSwagger();
             app.UseSwaggerUi3(config => { config.WithCredentials = true; });
