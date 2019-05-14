@@ -9,6 +9,7 @@ using NSwag.Annotations;
 using Realms;
 using server.Businesses;
 using server.DataTransfers.PostDataTransfers;
+using server.Middleware;
 using server.Models;
 
 namespace server.Controllers
@@ -37,7 +38,7 @@ namespace server.Controllers
         /// <response code="404">Không tìm thấy</response>
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public ActionResult<PostResponse> Item(int id) => (PostResponse)PostBusiness.Get(id);
 
         /// <summary>
