@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ using Newtonsoft.Json.Converters;
 using NJsonSchema;
 using NSwag.AspNetCore;
 using server.DataAccesses.Base;
+using server.DataTransfers;
 
 namespace server
 {
@@ -29,6 +31,8 @@ namespace server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            Mapper.Initialize(config => config.AddProfile<MappingProfile>());
+
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddMvc()

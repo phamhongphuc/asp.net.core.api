@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using Realms;
 using server.Businesses;
+using server.DataTransfers.PostDataTransfers;
 using server.Models;
 
 namespace server.Controllers
@@ -25,7 +26,8 @@ namespace server.Controllers
         /// Lấy danh sách các bài viết
         /// </summary>
         [HttpGet]
-        public ActionResult<List<Post>> Index() => PostBusiness.List.ToList();
+        public ActionResult<List<PostResponse>> Index()
+            => PostResponse.List(PostBusiness.List);
 
         /// <summary>
         /// Lấy một bài viết
@@ -36,7 +38,7 @@ namespace server.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public ActionResult<Post> Item(int id) => PostBusiness.Get(id);
+        public ActionResult<PostResponse> Item(int id) => (PostResponse)PostBusiness.Get(id);
 
         /// <summary>
         /// Đăng một bài viết mới
@@ -44,12 +46,12 @@ namespace server.Controllers
         /// <param name="post">Nội dung một bài đăng</param>
         /// <response code="201">Thành công</response>
         /// <returns></returns>
-        [ProducesResponseType(typeof(Post), StatusCodes.Status201Created)]
         [HttpPost]
-        public async Task<ActionResult<Post>> Post([FromBody] Post post)
+        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status201Created)]
+        public async Task<ActionResult<PostResponse>> Post([FromBody] PostRequest post)
         {
-            post = await PostBusiness.Add(post);
-            return CreatedAtAction(nameof(Post), post);
+            var response = await PostBusiness.Add((Post)post);
+            return CreatedAtAction(nameof(Post), (PostResponse)response);
         }
     }
 }
