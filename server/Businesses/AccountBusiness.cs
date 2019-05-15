@@ -24,7 +24,7 @@ namespace server.Businesses
         private static void CheckValid(Account account)
         {
             // kiểm tra name, pass, email
-            if(account.Name.Length < 3)
+            if (account.Name.Length < 3)
                 throw new Error400BadRequest<Account>(
                     "Tên phải có ít nhất 3 kí tự"
                 );
