@@ -19,14 +19,7 @@ namespace server.Businesses
             return post;
         }
 
-        public static async Task<Post> Add(Post post)
-        {
-            IsValid(post);
-
-            return await PostDataAccess.Add(post);
-        }
-
-        private static void IsValid(Post post)
+        private static void CheckValid(Post post)
         {
             if (post.Title.Length < 5)
                 throw new Error400BadRequest<Post>(
@@ -38,11 +31,17 @@ namespace server.Businesses
                     "Nội dung bài viết phải có nhiều hơn 10 ký tự"
                 );
         }
+        public static async Task<Post> Add(Post post)
+        {
+            CheckValid(post);
+
+            return await PostDataAccess.Add(post);
+        }
 
         public static async Task<Post> Update(Post post)
         {
             var postInDatabase = Get(post.Id);
-            IsValid(post);
+            CheckValid(post);
 
             return await PostDataAccess.Update(postInDatabase, post);
         }
