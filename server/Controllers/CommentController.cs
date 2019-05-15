@@ -56,9 +56,11 @@ namespace server.Controllers
         /// Sửa một bình luận
         /// </summary>
         /// <param name="comment">Nội dung bình luận</param>
+        /// <response code="200">Thành công</response>
         /// <response code="400">BadRequest</response>
         /// <response code="404">Không tìm thấy</response>
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CommentResponse>> Update([FromBody] CommentUpdateRequest comment)
@@ -74,8 +76,8 @@ namespace server.Controllers
         /// <response code="204">Xóa thành công</response>
         /// <response code="404">Không tìm thấy</response>
         [HttpDelete("{id:int}")]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             await CommentBusiness.Delete(id);

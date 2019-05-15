@@ -22,6 +22,7 @@ namespace server.Controllers
         /// Lấy danh sách các tài khoản
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<AccountResponse>> Index()
             => AccountResponse.List(AccountBusiness.List);
 
