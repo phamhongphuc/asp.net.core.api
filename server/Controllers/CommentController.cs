@@ -46,10 +46,10 @@ namespace server.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CommentResponse>> Comment([FromBody] CommentRequest comment)
+        public async Task<ActionResult<CommentResponse>> Create([FromBody] CommentRequest comment)
         {
             var response = await CommentBusiness.Add((Comment)comment);
-            return CreatedAtAction(nameof(Comment), (CommentResponse)response);
+            return CreatedAtAction(nameof(Create), (CommentResponse)response);
         }
 
         /// <summary>
