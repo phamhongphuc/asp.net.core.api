@@ -18,7 +18,7 @@ namespace server.Models
         public Account Owner { get; set; }
 
         public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Modified { get; set; }
+        public DateTimeOffset? Modified { get; set; }
 
         [Backlink(nameof(Comment.Post))]
         public IQueryable<Comment> Comments { get; }

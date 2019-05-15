@@ -1,5 +1,6 @@
 using System;
 using Realms;
+using server.Businesses;
 using server.Models.Interfaces;
 
 namespace server.Models
@@ -14,6 +15,6 @@ namespace server.Models
         public Post Post { get; set; }
 
         public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Modified { get; set; }
+        public DateTimeOffset? Modified { get; set; }
     }
 }
