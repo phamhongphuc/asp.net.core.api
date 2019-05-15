@@ -56,6 +56,12 @@ namespace server.Controllers
             return CreatedAtAction(nameof(Post), (PostResponse)response);
         }
 
+        /// <summary>
+        /// Sửa một bài viết
+        /// </summary>
+        /// <param name="post">Nội dung một bài viết</param>
+        /// <response code="400">BadRequest</response>
+        /// <response code="404">Không tìm thấy</response>
         [HttpPut]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
@@ -65,6 +71,12 @@ namespace server.Controllers
             return (PostResponse)response;
         }
 
+        /// <summary>
+        /// Xóa một bài viết
+        /// </summary>
+        /// <param name="id">Id bài viết</param>
+        /// <response code="204">Xóa thành công</response>
+        /// <response code="404">Không tìm thấy</response>
         [HttpDelete("{id:int}")]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
