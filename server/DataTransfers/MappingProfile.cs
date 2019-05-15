@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using server.DataTransfers.AccountDataTransfers;
 using server.DataTransfers.CommentDataTransfers;
 using server.DataTransfers.PostDataTransfers;
 using server.Models;
@@ -12,6 +13,7 @@ namespace server.DataTransfers
         {
             MappingPost();
             MappingComment();
+            MappingAccount();
         }
 
         private void MappingPost()
@@ -26,6 +28,12 @@ namespace server.DataTransfers
             CreateMap<Comment, CommentResponse>();
             CreateMap<CommentRequest, Comment>();
             CreateMap<CommentUpdateRequest, Comment>();
+        }
+
+        private void MappingAccount()
+        {
+            CreateMap<Account, AccountResponse>();
+            CreateMap<AccountRequest, Account>();
         }
     }
 }
