@@ -15,8 +15,8 @@ namespace server.Businesses
         public static Comment Get(int id)
         {
             var comment = CommentDataAccess.Get(id);
-            if(comment == null) throw new Error404NotFound<Comment>(id);
-            
+            if (comment == null) throw new Error404NotFound<Comment>(id);
+
             return comment;
         }
 
