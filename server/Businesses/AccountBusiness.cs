@@ -59,5 +59,13 @@ namespace server.Businesses
 
             await AccountDataAccess.ChangePassword(accountInDatabase, newPass);
         }
+
+        public static async Task<Account> Update(Account account)
+        {
+            var accountInDatabase = Get(account.Id);
+            CheckValid(account);
+
+            return await AccountDataAccess.Update(accountInDatabase, account);
+        }
     }
 }

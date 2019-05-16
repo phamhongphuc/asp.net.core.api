@@ -54,6 +54,23 @@ namespace server.Controllers
         }
 
         /// <summary>
+        /// Chỉnh Sửa thông tin tài khoản
+        /// </summary>
+        /// <param name="account">Thông tin tài khoản</param>
+        /// <response code="200">Thành công</response>
+        /// <response code="400">BadRequest</response>
+        /// <response code="404">Không tìm thấy</response>
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<AccountResponse>> Update([FromBody] AccountUpdateRequest account)
+        {
+            var response = await AccountBusiness.Update((Account)account);
+            return (AccountResponse)response;
+        }
+
+        /// <summary>
         /// Đổi mật khẩu cho tài khoản
         /// </summary>
         /// <param name="account">Thông tin mật khẩu</param>

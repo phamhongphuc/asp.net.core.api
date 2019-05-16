@@ -32,5 +32,16 @@ namespace server.DataAccesses
         {
             await Database.WriteAsync(realm => accountInDatabase.Pass = newPass);
         }
+
+        public static async Task<Account> Update(Account accountInDatabase, Account account)
+        {
+            await Database.WriteAsync(realm =>
+            {
+                accountInDatabase.Name = account.Name;
+                accountInDatabase.Picture = account.Picture;
+                accountInDatabase.Gender = account.Gender;
+            });
+            return accountInDatabase;
+        }
     }
 }
