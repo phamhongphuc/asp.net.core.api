@@ -28,11 +28,22 @@ namespace server.Controllers
             => AccountResponse.List(AccountBusiness.List);
 
         /// <summary>
+        /// Lấy thông tin của một tài khoản
+        /// </summary>
+        /// <param name="id">Id tài khoản</param>
+        /// <response code="200">Tìm thấy</response>
+        /// <response code="404">Không tìm thấy</response>
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        public ActionResult<AccountResponse> Item(int id) => (AccountResponse)AccountBusiness.Get(id);
+
+        /// <summary>
         /// Đăng ký mới một tài khoản
         /// </summary>
         /// <param name="account">Thông tin tài khoản</param>
         /// <response code="201">Thành công</response>
-        /// <response code="400">BadRequest</response>[HttpPost]
+        /// <response code="400">BadRequest</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
