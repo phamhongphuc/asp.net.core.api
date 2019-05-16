@@ -12,8 +12,12 @@ namespace server.Middleware.Error
 
         public Error404NotFound(int id) : base()
         {
-            Id = id;
             Description = $"Không tìm thấy <{Model}> có id là [{Id}]";
+        }
+
+        public Error404NotFound(string email) : base()
+        {
+            Description = $"Không tìm thấy <{Model}> có email là [{email}]";
         }
 
         public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
