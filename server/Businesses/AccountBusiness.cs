@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using server.Authentication;
 using server.DataAccesses;
 using server.DataTransfers.AccountDataTransfers;
 using server.Middleware.Error;
@@ -33,19 +34,30 @@ namespace server.Businesses
         public static async Task<Account> Add(Account account)
         {
             var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
-            if (accountInDatabase != null) throw new Exception("Email " + account.Email + " đã có người sử dụng");
+            if (accountInDatabase != null)
+                throw new Error400BadRequest<Account>("Email " + account.Email + " đã có người sử dụng");
 
             CheckValid(account);
+            account.Pass = CryptoHelper.Encrypt(account.Pass);
+
             return await AccountDataAccess.Add(account);
         }
 
         public static async Task ChangePassword(AccountPasswordRequest account)
         {
             var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
-            if (accountInDatabase == null) throw new Exception("Tài khoản không tồn tại");
-            if(accountInDatabase.Pass != account.Pass) throw new Exception("Mật khẩu không chính xác");
+            if (accountInDatabase == null)
+                throw new Error404NotFound<Account>(account.Email);
 
-            await AccountDataAccess.ChangePassword(accountInDatabase, account.NewPass);
+            if (!accountInDatabase.IsEqualPassword(account.Pass))
+                throw new Error400BadRequest<Account>("Mật khẩu không chính xác");
+
+            if (account.Pass == account.NewPass)
+                throw new Error400BadRequest<Account>("Mật khẩu mới không được trùng");
+
+            var newPass = CryptoHelper.Encrypt(account.NewPass);
+
+            await AccountDataAccess.ChangePassword(accountInDatabase, newPass);
         }
     }
 }
