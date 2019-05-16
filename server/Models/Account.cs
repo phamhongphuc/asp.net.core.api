@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Realms;
+using server.Authentication;
 using server.Models.Enums;
 using server.Models.Interfaces;
 
@@ -28,5 +29,10 @@ namespace server.Models
 
         [Backlink(nameof(Comment.Owner))]
         public IQueryable<Comment> Comments { get; }
+
+        public bool IsEqualPassword(string rawPassword)
+        {
+            return CryptoHelper.Encrypt(rawPassword).Equals(Pass);
+        }
     }
 }
