@@ -34,6 +34,7 @@ namespace server.DataTransfers
         {
             CreateMap<Account, AccountResponse>();
             CreateMap<AccountRequest, Account>();
+            CreateMap<AccountPasswordRequest, Account>();
         }
     }
 }
