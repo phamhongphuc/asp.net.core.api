@@ -39,5 +39,13 @@ namespace server.Businesses
             return await AccountDataAccess.Add(account);
         }
 
+        public static async Task ChangePassword(AccountPasswordRequest account)
+        {
+            var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
+            if (accountInDatabase == null) throw new Exception("Tài khoản không tồn tại");
+            if(accountInDatabase.Pass != account.Pass) throw new Exception("Mật khẩu không chính xác");
+
+            await AccountDataAccess.ChangePassword(accountInDatabase, account.NewPass);
+        }
     }
 }

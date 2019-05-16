@@ -27,5 +27,10 @@ namespace server.DataAccesses
             });
             return account;
         }
+
+        public static async Task ChangePassword(Account accountInDatabase, string newPass)
+        {
+            await Database.WriteAsync(realm => accountInDatabase.Pass = newPass);
+        }
     }
 }
