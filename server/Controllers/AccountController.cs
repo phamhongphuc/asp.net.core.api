@@ -42,11 +42,23 @@ namespace server.Controllers
         public ActionResult<AccountResponse> Item(int id) => (AccountResponse)AccountBusiness.Get(id);
 
         /// <summary>
+        /// Lấy thông tin tài khoản của chính mình
+        /// </summary>
+        /// <response code="200">Tìm thấy</response>
+        [HttpGet("me")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<AccountResponse> Me()
+        {
+            return (AccountResponse)CurrentUser;
+        }
+
+        /// <summary>
         /// Đăng ký mới một tài khoản
         /// </summary>
         /// <param name="account">Thông tin tài khoản</param>
         /// <response code="201">Thành công</response>
         /// <response code="400">BadRequest</response>
+        [AllowAnonymous]
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -88,8 +100,16 @@ namespace server.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Đăng nhập
+        /// </summary>
+        /// <param name="account">Thông tin đăng nhập</param>
+        /// <response code="201">Thành công</response>
+        /// <response code="400">BadRequest</response>
         [AllowAnonymous]
         [HttpPost("Login")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public ActionResult<AccountLoginResponse> Login([FromBody] AccountLoginRequest account)
         {
             var response = AccountBusiness.GetAuthenticationObject(account);
