@@ -15,7 +15,7 @@ namespace server.Authentication
         {
             Configuration = configuration;
         }
-        public static string TokenBuilder(string id)
+        public static string TokenBuilder(string email)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -27,7 +27,7 @@ namespace server.Authentication
                 expires: DateTime.Now.AddDays(3),
                 claims: new[]
                 {
-                    new Claim(ClaimTypes.Name, id)
+                    new Claim(ClaimTypes.Email, email)
                 }
             );
 
