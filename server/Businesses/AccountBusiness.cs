@@ -22,6 +22,8 @@ namespace server.Businesses
             return account;
         }
 
+        public static Account GetByEmail(string email) => AccountDataAccess.GetByEmail(email);
+
         private static void CheckValid(Account account)
         {
             // kiểm tra name, pass, email
@@ -33,7 +35,7 @@ namespace server.Businesses
 
         public static async Task<Account> Add(Account account)
         {
-            var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
+            var accountInDatabase = GetByEmail(account.Email);
             if (accountInDatabase != null)
                 throw new Error400BadRequest<Account>("Email " + account.Email + " đã có người sử dụng");
 
