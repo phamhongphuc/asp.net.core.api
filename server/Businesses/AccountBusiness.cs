@@ -67,5 +67,17 @@ namespace server.Businesses
 
             return await AccountDataAccess.Update(accountInDatabase, account);
         }
+
+        public static AccountLoginResponse GetAuthenticationObject(AccountLoginRequest account)
+        {
+            var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
+            if (accountInDatabase == null || !accountInDatabase.IsEqualPassword(account.Pass))
+                throw new Error400BadRequest<Account>("Tài khoản hoặc mật khẩu không chính xác");
+
+            return new AccountLoginResponse
+            {
+                Token = AuthenticationHelper.TokenBuilder(account.Email),
+            };
+        }
     }
 }

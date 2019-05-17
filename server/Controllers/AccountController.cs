@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -17,6 +18,8 @@ namespace server.Controllers
         "Account",
         Description = "Quản lý hành động của tài khoản"
     )]
+
+    [Authorize]
     public class AccountController : BaseController
     {
         /// <summary>
@@ -25,7 +28,7 @@ namespace server.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<AccountResponse>> Index()
-            => AccountResponse.List(AccountBusiness.List);
+                => AccountResponse.List(AccountBusiness.List);
 
         /// <summary>
         /// Lấy thông tin của một tài khoản
@@ -44,7 +47,7 @@ namespace server.Controllers
         /// <param name="account">Thông tin tài khoản</param>
         /// <response code="201">Thành công</response>
         /// <response code="400">BadRequest</response>
-        [HttpPost]
+        [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<AccountResponse>> Register([FromBody] AccountRequest account)
@@ -83,6 +86,14 @@ namespace server.Controllers
         {
             await AccountBusiness.ChangePassword(account);
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public ActionResult<AccountLoginResponse> Login([FromBody] AccountLoginRequest account)
+        {
+            var response = AccountBusiness.GetAuthenticationObject(account);
+            return CreatedAtAction(nameof(Login), response);
         }
     }
 }
