@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using NJsonSchema;
 using NSwag.AspNetCore;
+using server.Authentication;
 using server.DataAccesses.Base;
 using server.DataTransfers;
 using server.Middleware;
@@ -25,6 +29,7 @@ namespace server
 
         public Startup(IConfiguration configuration)
         {
+            AuthenticationHelper.Initialize(configuration);
             Configuration = configuration;
         }
 
@@ -55,6 +60,21 @@ namespace server
                     document.Info.Description = Configuration["Swagger:Description"];
                 };
             });
+
+            services
+               .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(jwtBearerOptions =>
+                {
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = Configuration["JWT:issuer"],
+                        ValidAudience = Configuration["JWT:audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"]))
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +92,7 @@ namespace server
             app.UseSwaggerUi3(config => { config.WithCredentials = true; });
             app.UseReDoc(config => config.Path = "/redoc");
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
