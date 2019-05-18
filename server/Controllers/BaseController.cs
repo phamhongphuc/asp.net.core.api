@@ -2,6 +2,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using server.Businesses;
+using server.Middleware.Error;
 using server.Models;
 
 namespace server.Controllers
@@ -14,7 +15,11 @@ namespace server.Controllers
             get
             {
                 var email = User.Claims.First(i => i.Type == ClaimTypes.Email).Value;
-                return AccountBusiness.GetByEmail(email);
+                var account = AccountBusiness.GetByEmail(email);
+
+                if (account == null) throw new Error404NotFound<Account>(email);
+
+                return account;
             }
         }
     }
