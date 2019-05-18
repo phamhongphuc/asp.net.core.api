@@ -19,6 +19,8 @@ namespace server.DataTransfers
         private void MappingPost()
         {
             CreateMap<Post, PostResponse>();
+            CreateMap<Post, PostIdTransfer>();
+            CreateMap<PostIdTransfer, Post>();
             CreateMap<PostRequest, Post>();
             CreateMap<PostUpdateRequest, Post>();
         }
