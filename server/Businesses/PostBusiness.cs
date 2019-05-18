@@ -31,16 +31,19 @@ namespace server.Businesses
                     "Nội dung bài viết phải có nhiều hơn 10 ký tự"
                 );
         }
-        public static async Task<Post> Add(Post post)
+        public static async Task<Post> Add(Post post, Account accountInDatabase)
         {
             CheckValid(post);
-
+            post.Owner = accountInDatabase;
             return await PostDataAccess.Add(post);
         }
 
-        public static async Task<Post> Update(Post post)
+        public static async Task<Post> Update(Post post, Account accountInDatabase)
         {
             var postInDatabase = Get(post.Id);
+            if(postInDatabase.Owner.Id != accountInDatabase.Id)
+                throw new Error400BadRequest<Post>("Bạn không có quyền chỉnh sửa bài viết này");
+                
             CheckValid(post);
 
             return await PostDataAccess.Update(postInDatabase, post);

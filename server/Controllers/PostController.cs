@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -21,11 +22,14 @@ namespace server.Controllers
         "Post",
         Description = "Quản lý hành động của đối tượng bài đăng"
     )]
+
+    [Authorize]
     public class PostController : BaseController
     {
         /// <summary>
         /// Lấy danh sách các bài viết
         /// </summary>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<List<PostResponse>> Index()
             => PostResponse.List(PostBusiness.List);
@@ -36,6 +40,7 @@ namespace server.Controllers
         /// <param name="id">Id bài viết</param>
         /// <response code="200">Tìm thấy</response>
         /// <response code="404">Không tìm thấy</response>
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
@@ -52,7 +57,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PostResponse>> Create([FromBody] PostRequest post)
         {
-            var response = await PostBusiness.Add((Post)post);
+            var response = await PostBusiness.Add((Post)post, CurrentUser);
             return CreatedAtAction(nameof(Create), (PostResponse)response);
         }
 
@@ -69,7 +74,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PostResponse>> Update([FromBody] PostUpdateRequest post)
         {
-            var response = await PostBusiness.Update((Post)post);
+            var response = await PostBusiness.Update((Post)post, CurrentUser);
             return (PostResponse)response;
         }
 
