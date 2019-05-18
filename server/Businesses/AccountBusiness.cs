@@ -46,12 +46,8 @@ namespace server.Businesses
             return await AccountDataAccess.Add(account);
         }
 
-        public static async Task ChangePassword(AccountPasswordRequest account)
+        public static async Task ChangePassword(Account accountInDatabase, AccountPasswordRequest account)
         {
-            var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
-            if (accountInDatabase == null)
-                throw new Error404NotFound<Account>(account.Email);
-
             if (!accountInDatabase.IsEqualPassword(account.Pass))
                 throw new Error400BadRequest<Account>("Mật khẩu không chính xác");
 

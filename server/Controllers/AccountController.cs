@@ -96,7 +96,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ChangePassword([FromBody] AccountPasswordRequest account)
         {
-            await AccountBusiness.ChangePassword(account);
+            await AccountBusiness.ChangePassword(CurrentUser, account);
             return NoContent();
         }
 
