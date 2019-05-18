@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -17,11 +18,14 @@ namespace server.Controllers
         "Comment",
         Description = "Quản lý hành động của đối tượng bình luận"
     )]
+    
+    [Authorize]
     public class CommentController : BaseController
     {
         /// <summary>
         /// Lấy danh sách các bình luận
         /// </summary>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<List<CommentResponse>> Index()
             => CommentResponse.List(CommentBusiness.List);
@@ -32,6 +36,7 @@ namespace server.Controllers
         /// <param name="id">Id bình luận</param>
         /// <response code="200">Tìm thấy</response>
         /// <response code="404">Không tìm thấy</response>
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
@@ -48,7 +53,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<CommentResponse>> Create([FromBody] CommentRequest comment)
         {
-            var response = await CommentBusiness.Add((Comment)comment);
+            var response = await CommentBusiness.Add((Comment)comment, CurrentUser);
             return CreatedAtAction(nameof(Create), (CommentResponse)response);
         }
 

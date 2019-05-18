@@ -28,9 +28,11 @@ namespace server.Businesses
                 );
         }
 
-        public static async Task<Comment> Add(Comment comment)
+        public static async Task<Comment> Add(Comment comment, Account accountInDatabase)
         {
             CheckValid(comment);
+            comment.Post = PostBusiness.Get(comment.Post.Id);
+            comment.Owner = accountInDatabase;
             return await CommentDataAccess.Add(comment);
         }
 
