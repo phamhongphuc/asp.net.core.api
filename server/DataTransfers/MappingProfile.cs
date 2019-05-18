@@ -33,6 +33,7 @@ namespace server.DataTransfers
         private void MappingAccount()
         {
             CreateMap<Account, AccountResponse>();
+            CreateMap<Account, AccountIdResponse>();
             CreateMap<AccountRequest, Account>();
             CreateMap<AccountPasswordRequest, Account>();
             CreateMap<AccountUpdateRequest, Account>();
