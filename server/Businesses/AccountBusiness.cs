@@ -31,6 +31,7 @@ namespace server.Businesses
                 throw new Error400BadRequest<Account>(
                     "Tên phải có ít nhất 3 kí tự"
                 );
+
         }
 
         public static async Task<Account> Add(Account account)
@@ -62,9 +63,8 @@ namespace server.Businesses
             await AccountDataAccess.ChangePassword(accountInDatabase, newPass);
         }
 
-        public static async Task<Account> Update(Account account)
+        public static async Task<Account> Update(Account accountInDatabase, Account account)
         {
-            var accountInDatabase = Get(account.Id);
             CheckValid(account);
 
             return await AccountDataAccess.Update(accountInDatabase, account);

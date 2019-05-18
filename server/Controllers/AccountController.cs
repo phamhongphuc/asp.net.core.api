@@ -81,7 +81,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AccountResponse>> Update([FromBody] AccountUpdateRequest account)
         {
-            var response = await AccountBusiness.Update((Account)account);
+            var response = await AccountBusiness.Update(CurrentUser ,(Account)account);
             return (AccountResponse)response;
         }
 
