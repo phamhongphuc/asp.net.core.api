@@ -89,7 +89,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            await PostBusiness.Delete(id);
+            await PostBusiness.Delete(id, CurrentUser);
             return NoContent();
         }
     }

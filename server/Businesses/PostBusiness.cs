@@ -41,17 +41,22 @@ namespace server.Businesses
         public static async Task<Post> Update(Post post, Account accountInDatabase)
         {
             var postInDatabase = Get(post.Id);
-            if(postInDatabase.Owner.Id != accountInDatabase.Id)
+            if (postInDatabase.Owner.Id != accountInDatabase.Id)
                 throw new Error400BadRequest<Post>("Bạn không có quyền chỉnh sửa bài viết này");
-                
+
             CheckValid(post);
 
             return await PostDataAccess.Update(postInDatabase, post);
         }
 
-        public static async Task Delete(int id)
+        public static async Task Delete(int id, Account accountInDatabase)
         {
-            await PostDataAccess.Delete(Get(id));
+            var post = Get(id);
+
+            // Admin hoặc chủ nhân bài viết đc phép xóa
+            if (post.Owner.Id == accountInDatabase.Id)
+                await PostDataAccess.Delete(post);
+            else throw new Error400BadRequest<Post>("Bạn không có quyền xóa bài viết này");
         }
     }
 }
