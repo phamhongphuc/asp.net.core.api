@@ -16,5 +16,7 @@ namespace server.Models
 
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Modified { get; set; }
+
+        public Boolean IsOwner(Account account) => Owner.Id == account.Id;
     }
 }

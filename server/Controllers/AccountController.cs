@@ -27,8 +27,8 @@ namespace server.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<AccountResponse>> Index()
-                => AccountResponse.List(AccountBusiness.List);
+        public ActionResult<List<AccountResponse>> List()
+            => AccountResponse.List(AccountBusiness.List);
 
         /// <summary>
         /// Lấy thông tin của một tài khoản
@@ -39,7 +39,7 @@ namespace server.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public ActionResult<AccountResponse> Item(int id) => (AccountResponse)AccountBusiness.Get(id);
+        public ActionResult<AccountResponse> GetById(int id) => (AccountResponse)AccountBusiness.Get(id);
 
         /// <summary>
         /// Lấy thông tin tài khoản của chính mình
@@ -47,10 +47,7 @@ namespace server.Controllers
         /// <response code="200">Tìm thấy</response>
         [HttpGet("me")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<AccountResponse> Me()
-        {
-            return (AccountResponse)CurrentUser;
-        }
+        public ActionResult<AccountResponse> Me() => (AccountResponse)CurrentUser;
 
         /// <summary>
         /// Đăng ký mới một tài khoản
@@ -59,10 +56,10 @@ namespace server.Controllers
         /// <response code="201">Thành công</response>
         /// <response code="400">BadRequest</response>
         [AllowAnonymous]
-        [HttpPost("Register")]
+        [HttpPost(nameof(Register))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<AccountResponse>> Register([FromBody] AccountRequest account)
+        public async Task<ActionResult<AccountResponse>> Register([FromBody] AccountCreateRequest account)
         {
             var response = await AccountBusiness.Add((Account)account);
             return CreatedAtAction(nameof(Register), (AccountResponse)response);
@@ -88,15 +85,15 @@ namespace server.Controllers
         /// <summary>
         /// Đổi mật khẩu cho tài khoản
         /// </summary>
-        /// <param name="account">Thông tin mật khẩu</param>
+        /// <param name="request">Thông tin mật khẩu</param>
         /// <response code="204">Đổi mật khẩu thành công</response>
         /// <response code="404">Không tìm thấy</response>
         [HttpPatch]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> ChangePassword([FromBody] AccountPasswordRequest account)
+        public async Task<IActionResult> ChangePassword([FromBody] AccountChangePasswordRequest request)
         {
-            await AccountBusiness.ChangePassword(CurrentUser, account);
+            await AccountBusiness.ChangePassword(CurrentUser, request);
             return NoContent();
         }
 
@@ -107,7 +104,7 @@ namespace server.Controllers
         /// <response code="201">Thành công</response>
         /// <response code="400">BadRequest</response>
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost(nameof(Login))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public ActionResult<AccountLoginResponse> Login([FromBody] AccountLoginRequest account)

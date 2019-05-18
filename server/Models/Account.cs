@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Realms;
 using server.Authentication;
+using server.Businesses;
+using server.Middleware.Error;
 using server.Models.Enums;
 using server.Models.Interfaces;
 
@@ -14,7 +16,7 @@ namespace server.Models
 
         [PrimaryKey]
         public int Id { get; set; }
-        public string Pass { get; set; }
+        public string Password { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Picture { get; set; }
@@ -32,7 +34,18 @@ namespace server.Models
 
         public bool IsEqualPassword(string rawPassword)
         {
-            return CryptoHelper.Encrypt(rawPassword).Equals(Pass);
+            return CryptoHelper.Encrypt(rawPassword).Equals(Password);
+        }
+
+        [Ignored]
+        public Account GetManagedByEmail
+        {
+            get
+            {
+                var account = AccountBusiness.GetByEmail(Email);
+                if (account == null) throw new Error404NotFound<Account>(Email);
+                return account;
+            }
         }
     }
 }

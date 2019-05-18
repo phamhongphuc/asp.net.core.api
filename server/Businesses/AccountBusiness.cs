@@ -26,37 +26,35 @@ namespace server.Businesses
 
         private static void CheckValid(Account account)
         {
-            // kiểm tra name, pass, email
             if (account.Name.Length < 3)
                 throw new Error400BadRequest<Account>(
                     "Tên phải có ít nhất 3 kí tự"
                 );
-
         }
 
         public static async Task<Account> Add(Account account)
         {
-            var accountInDatabase = GetByEmail(account.Email);
+            var accountInDatabase = account.GetManagedByEmail;
             if (accountInDatabase != null)
                 throw new Error400BadRequest<Account>("Email " + account.Email + " đã có người sử dụng");
 
             CheckValid(account);
-            account.Pass = CryptoHelper.Encrypt(account.Pass);
+            account.Password = CryptoHelper.Encrypt(account.Password);
 
             return await AccountDataAccess.Add(account);
         }
 
-        public static async Task ChangePassword(Account accountInDatabase, AccountPasswordRequest account)
+        public static async Task ChangePassword(Account account, AccountChangePasswordRequest request)
         {
-            if (!accountInDatabase.IsEqualPassword(account.Pass))
+            if (!account.IsEqualPassword(request.Password))
                 throw new Error400BadRequest<Account>("Mật khẩu không chính xác");
 
-            if (account.Pass == account.NewPass)
+            if (request.Password == request.NewPassword)
                 throw new Error400BadRequest<Account>("Mật khẩu mới không được trùng");
 
-            var newPass = CryptoHelper.Encrypt(account.NewPass);
+            var newPassword = CryptoHelper.Encrypt(request.NewPassword);
 
-            await AccountDataAccess.ChangePassword(accountInDatabase, newPass);
+            await AccountDataAccess.ChangePassword(account, newPassword);
         }
 
         public static async Task<Account> Update(Account accountInDatabase, Account account)
@@ -66,15 +64,15 @@ namespace server.Businesses
             return await AccountDataAccess.Update(accountInDatabase, account);
         }
 
-        public static AccountLoginResponse GetAuthenticationObject(AccountLoginRequest account)
+        public static AccountLoginResponse GetAuthenticationObject(AccountLoginRequest request)
         {
-            var accountInDatabase = AccountDataAccess.GetByEmail(account.Email);
-            if (accountInDatabase == null || !accountInDatabase.IsEqualPassword(account.Pass))
+            var accountInDatabase = AccountDataAccess.GetByEmail(request.Email);
+            if (accountInDatabase == null || !accountInDatabase.IsEqualPassword(request.Password))
                 throw new Error400BadRequest<Account>("Tài khoản hoặc mật khẩu không chính xác");
 
             return new AccountLoginResponse
             {
-                Token = AuthenticationHelper.TokenBuilder(account.Email),
+                Token = AuthenticationHelper.TokenBuilder(request.Email),
             };
         }
     }

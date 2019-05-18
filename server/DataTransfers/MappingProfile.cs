@@ -19,16 +19,15 @@ namespace server.DataTransfers
         private void MappingPost()
         {
             CreateMap<Post, PostResponse>();
-            CreateMap<Post, PostIdTransfer>();
-            CreateMap<PostIdTransfer, Post>();
-            CreateMap<PostRequest, Post>();
+            CreateMap<Post, PostIdTransfer>().ReverseMap();
+            CreateMap<PostCreateRequest, Post>();
             CreateMap<PostUpdateRequest, Post>();
         }
 
         private void MappingComment()
         {
             CreateMap<Comment, CommentResponse>();
-            CreateMap<CommentRequest, Comment>();
+            CreateMap<CommentCreateRequest, Comment>();
             CreateMap<CommentUpdateRequest, Comment>();
         }
 
@@ -36,10 +35,8 @@ namespace server.DataTransfers
         {
             CreateMap<Account, AccountResponse>();
             CreateMap<Account, AccountIdResponse>();
-            CreateMap<AccountRequest, Account>();
-            CreateMap<AccountPasswordRequest, Account>();
+            CreateMap<AccountCreateRequest, Account>();
             CreateMap<AccountUpdateRequest, Account>();
-            CreateMap<AccountLoginRequest, Account>();
         }
     }
 }

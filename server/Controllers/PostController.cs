@@ -55,7 +55,7 @@ namespace server.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<PostResponse>> Create([FromBody] PostRequest post)
+        public async Task<ActionResult<PostResponse>> Create([FromBody] PostCreateRequest post)
         {
             var response = await PostBusiness.Add((Post)post, CurrentUser);
             return CreatedAtAction(nameof(Create), (PostResponse)response);

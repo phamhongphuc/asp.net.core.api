@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using server.DataAccesses;
-using server.DataTransfers.CommentDataTransfers;
 using server.Middleware.Error;
 using server.Models;
 
@@ -28,18 +26,18 @@ namespace server.Businesses
                 );
         }
 
-        public static async Task<Comment> Add(Comment comment, Account accountInDatabase)
+        public static async Task<Comment> Add(Comment comment, Account account)
         {
             CheckValid(comment);
-            comment.Post = PostBusiness.Get(comment.Post.Id);
-            comment.Owner = accountInDatabase;
+            comment.Post = comment.Post.GetManaged;
+            comment.Owner = account;
             return await CommentDataAccess.Add(comment);
         }
 
-        public static async Task<Comment> Update(Comment comment, Account accountInDatabase)
+        public static async Task<Comment> Update(Comment comment, Account account)
         {
             var commentInDatabase = Get(comment.Id);
-            if (commentInDatabase.Owner.Id != accountInDatabase.Id)
+            if (comment.IsOwner(account))
                 throw new Error400BadRequest<Comment>("Bạn không có quyền chỉnh sửa bình luận này");
 
             CheckValid(comment);
@@ -47,14 +45,14 @@ namespace server.Businesses
             return await CommentDataAccess.Update(commentInDatabase, comment);
         }
 
-        public static async Task Delete(int id, Account accountInDatabase)
+        public static async Task Delete(int id, Account account)
         {
             var comment = Get(id);
-            // Admin hoặc chủ nhân bài viết đc phép xóa
-            if (comment.Owner.Id == accountInDatabase.Id)
-                await CommentDataAccess.Delete(comment);
+            // Admin hoặc người đăng bài viết được phép xóa
+            if (comment.IsOwner(account))
+                throw new Error400BadRequest<Comment>("Bạn không có quyền xóa bình luận này");
 
-            else throw new Error400BadRequest<Comment>("Bạn không có quyền xóa bình luận này");
+            await CommentDataAccess.Delete(comment);
         }
     }
 }

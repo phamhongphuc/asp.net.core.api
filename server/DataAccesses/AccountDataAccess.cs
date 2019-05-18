@@ -30,7 +30,7 @@ namespace server.DataAccesses
 
         public static async Task ChangePassword(Account accountInDatabase, string newPass)
         {
-            await Database.WriteAsync(realm => accountInDatabase.Pass = newPass);
+            await Database.WriteAsync(realm => accountInDatabase.Password = newPass);
         }
 
         public static async Task<Account> Update(Account accountInDatabase, Account account)

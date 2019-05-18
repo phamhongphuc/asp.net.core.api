@@ -31,17 +31,18 @@ namespace server.Businesses
                     "Nội dung bài viết phải có nhiều hơn 10 ký tự"
                 );
         }
-        public static async Task<Post> Add(Post post, Account accountInDatabase)
+        public static async Task<Post> Add(Post post, Account account)
         {
             CheckValid(post);
-            post.Owner = accountInDatabase;
+            post.Owner = account;
+
             return await PostDataAccess.Add(post);
         }
 
-        public static async Task<Post> Update(Post post, Account accountInDatabase)
+        public static async Task<Post> Update(Post post, Account account)
         {
-            var postInDatabase = Get(post.Id);
-            if (postInDatabase.Owner.Id != accountInDatabase.Id)
+            var postInDatabase = post.GetManaged;
+            if (postInDatabase.IsOwner(account))
                 throw new Error400BadRequest<Post>("Bạn không có quyền chỉnh sửa bài viết này");
 
             CheckValid(post);
@@ -49,14 +50,15 @@ namespace server.Businesses
             return await PostDataAccess.Update(postInDatabase, post);
         }
 
-        public static async Task Delete(int id, Account accountInDatabase)
+        public static async Task Delete(int id, Account account)
         {
             var post = Get(id);
 
             // Admin hoặc chủ nhân bài viết đc phép xóa
-            if (post.Owner.Id == accountInDatabase.Id)
-                await PostDataAccess.Delete(post);
-            else throw new Error400BadRequest<Post>("Bạn không có quyền xóa bài viết này");
+            if (post.IsOwner(account))
+                throw new Error400BadRequest<Post>("Bạn không có quyền xóa bài viết này");
+
+            await PostDataAccess.Delete(post);
         }
     }
 }

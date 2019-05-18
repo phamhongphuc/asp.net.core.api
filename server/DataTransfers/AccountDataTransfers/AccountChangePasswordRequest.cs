@@ -1,10 +1,8 @@
-using server.Models;
-
 namespace server.DataTransfers.AccountDataTransfers
 {
-    public class AccountLoginRequest
+    public class AccountChangePasswordRequest
     {
-        public string Email { get; set; }
         public string Password { get; set; }
+        public string NewPassword { get; set; }
     }
 }

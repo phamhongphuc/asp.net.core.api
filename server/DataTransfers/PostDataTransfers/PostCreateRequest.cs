@@ -1,12 +1,8 @@
-﻿using System;
-using server.Models;
-using AutoMapper;
-using System.Collections.Generic;
-using System.Collections;
+﻿using server.Models;
 
 namespace server.DataTransfers.PostDataTransfers
 {
-    public class PostRequest : BaseDataTransfers<Post, PostRequest>
+    public class PostCreateRequest : BaseDataTransfers<Post, PostCreateRequest>
     {
         public string Title { get; set; }
         public string Cover { get; set; }

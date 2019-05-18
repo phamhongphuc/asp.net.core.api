@@ -1,5 +1,3 @@
-using Realms;
-
 namespace server.Models.Interfaces
 {
     public interface IModelHasId
