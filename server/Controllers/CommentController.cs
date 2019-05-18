@@ -18,7 +18,7 @@ namespace server.Controllers
         "Comment",
         Description = "Quản lý hành động của đối tượng bình luận"
     )]
-    
+
     [Authorize]
     public class CommentController : BaseController
     {

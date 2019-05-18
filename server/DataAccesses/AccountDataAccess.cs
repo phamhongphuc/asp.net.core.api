@@ -12,7 +12,7 @@ namespace server.DataAccesses
         public static Account GetByEmail(string email)
         {
             var x = List.Where(account => account.Email == email);
-            if  (x.Count() == 0) return null;
+            if (x.Count() == 0) return null;
             return x.First();
         }
 

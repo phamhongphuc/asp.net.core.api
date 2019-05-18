@@ -39,7 +39,7 @@ namespace server.Businesses
         public static async Task<Comment> Update(Comment comment, Account accountInDatabase)
         {
             var commentInDatabase = Get(comment.Id);
-            if(commentInDatabase.Owner.Id != accountInDatabase.Id)
+            if (commentInDatabase.Owner.Id != accountInDatabase.Id)
                 throw new Error400BadRequest<Comment>("Bạn không có quyền chỉnh sửa bình luận này");
 
             CheckValid(comment);
