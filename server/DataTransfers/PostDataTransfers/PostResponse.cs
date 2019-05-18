@@ -3,6 +3,7 @@ using server.Models;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Collections;
+using server.DataTransfers.AccountDataTransfers;
 
 namespace server.DataTransfers.PostDataTransfers
 {
@@ -12,7 +13,7 @@ namespace server.DataTransfers.PostDataTransfers
         public string Title { get; set; }
         public string Cover { get; set; }
         public string Content { get; set; }
-
+        public AccountIdResponse Owner { get; set; }
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Modified { get; set; }
     }
