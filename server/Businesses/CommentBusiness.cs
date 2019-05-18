@@ -36,17 +36,25 @@ namespace server.Businesses
             return await CommentDataAccess.Add(comment);
         }
 
-        public static async Task<Comment> Update(Comment comment)
+        public static async Task<Comment> Update(Comment comment, Account accountInDatabase)
         {
             var commentInDatabase = Get(comment.Id);
+            if(commentInDatabase.Owner.Id != accountInDatabase.Id)
+                throw new Error400BadRequest<Comment>("Bạn không có quyền chỉnh sửa bình luận này");
+
             CheckValid(comment);
 
             return await CommentDataAccess.Update(commentInDatabase, comment);
         }
 
-        public static async Task Delete(int id)
+        public static async Task Delete(int id, Account accountInDatabase)
         {
-            await CommentDataAccess.Delete(Get(id));
+            var comment = Get(id);
+            // Admin hoặc chủ nhân bài viết đc phép xóa
+            if (comment.Owner.Id == accountInDatabase.Id)
+                await CommentDataAccess.Delete(comment);
+
+            else throw new Error400BadRequest<Comment>("Bạn không có quyền xóa bình luận này");
         }
     }
 }

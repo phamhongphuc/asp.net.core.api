@@ -70,7 +70,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CommentResponse>> Update([FromBody] CommentUpdateRequest comment)
         {
-            var response = await CommentBusiness.Update((Comment)comment);
+            var response = await CommentBusiness.Update((Comment)comment, CurrentUser);
             return (CommentResponse)response;
         }
 
@@ -85,7 +85,7 @@ namespace server.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            await CommentBusiness.Delete(id);
+            await CommentBusiness.Delete(id, CurrentUser);
             return NoContent();
         }
     }
