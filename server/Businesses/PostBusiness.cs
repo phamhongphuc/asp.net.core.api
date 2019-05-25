@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using server.DataAccesses;
+using server.Middleware.Error;
 using server.Models;
 
 namespace server.Businesses
@@ -13,7 +14,7 @@ namespace server.Businesses
         public static Post Get(int id)
         {
             var post = PostDataAccess.Get(id);
-            if (post == null) throw new Exception("Item Not Found");
+            if (post == null) throw new Error404NotFound<Post>(id);
 
             return post;
         }
@@ -21,10 +22,14 @@ namespace server.Businesses
         public static async Task<Post> Add(Post post)
         {
             if (post.Title.Length < 5)
-                throw new Exception("Post title must be more than 5 characters");
+                throw new Error400BadRequest<Post>(
+                    "Tiêu đề bài viết phải có nhiều hơn 5 ký tự"
+                );
 
             if (post.Content.Length < 10)
-                throw new Exception("Post content must be more than 10 characters");
+                throw new Error400BadRequest<Post>(
+                    "Nội dung bài viết phải có nhiều hơn 10 ký tự"
+                );
 
             return await PostDataAccess.Add(post);
         }

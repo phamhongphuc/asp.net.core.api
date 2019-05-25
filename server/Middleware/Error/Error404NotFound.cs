@@ -8,12 +8,14 @@ namespace server.Middleware.Error
     public class Error404NotFound<TModel> : BaseErrorGeneric<TModel>
         where TModel : RealmObject, IModelHasId
     {
-        private int Id { get; }
-
         public Error404NotFound(int id) : base()
         {
-            Id = id;
-            Description = $"Không tìm thấy <{Model}> có id là [{Id}]";
+            Description = $"Không tìm thấy <{Model}> có id là [{id}]";
+        }
+
+        public Error404NotFound(string email) : base()
+        {
+            Description = $"Không tìm thấy <{Model}> có email là [{email}]";
         }
 
         public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
