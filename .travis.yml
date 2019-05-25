@@ -1,0 +1,13 @@
+dist: xenial
+dotnet: 2.2.203
+
+matrix:
+    include:
+        - language: csharp
+          os: linux
+          mono: none
+          env: ❤ = C# Build
+          script:
+              - dotnet --info
+              - dotnet restore
+              - dotnet build
