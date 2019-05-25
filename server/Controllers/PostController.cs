@@ -1,16 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
-using Realms;
+using server.Authentication;
 using server.Businesses;
+using server.Controllers.Base;
 using server.DataTransfers.PostDataTransfers;
 using server.Middleware;
 using server.Models;
+using server.Models.Enums;
 
 namespace server.Controllers
 {
