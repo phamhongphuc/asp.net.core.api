@@ -1,0 +1,8 @@
+{
+  "name": "asp.net.core.api",
+  "scripts": {
+    "dev": "dotnet run --project server",
+    "watch": "dotnet watch --project server run",
+    "build": "dotnet build"
+  }
+}
