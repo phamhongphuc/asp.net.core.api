@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using server.DataTransfers.AccountDataTransfers;
 using server.Models;
 
 namespace server.DataTransfers.PostDataTransfers
@@ -9,8 +10,8 @@ namespace server.DataTransfers.PostDataTransfers
         public string Title { get; set; }
         public string Cover { get; set; }
         public string Content { get; set; }
-
+        public AccountIdTransfer Owner { get; set; }
         public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Modified { get; set; }
+        public DateTimeOffset? Modified { get; set; }
     }
 }

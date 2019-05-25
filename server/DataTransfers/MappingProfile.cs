@@ -17,6 +17,9 @@ namespace server.DataTransfers
         private void MappingPost()
         {
             CreateMap<Post, PostResponse>();
+            CreateMap<Post, PostIdTransfer>().ReverseMap();
+            CreateMap<PostCreateRequest, Post>();
+            CreateMap<PostUpdateRequest, Post>();
         }
         private void MappingAccount()
         {

@@ -21,6 +21,7 @@ namespace server.Controllers
         "Post",
         Description = "Quản lý hành động của đối tượng bài đăng"
     )]
+
     public class PostController : BaseController
     {
         /// <summary>
@@ -46,13 +47,49 @@ namespace server.Controllers
         /// </summary>
         /// <param name="post">Nội dung một bài đăng</param>
         /// <response code="201">Thành công</response>
-        /// <returns></returns>
+        /// <response code="400">BadRequest</response>
         [HttpPost]
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status201Created)]
-        public async Task<ActionResult<PostResponse>> Post([FromBody] PostRequest post)
+        [Authorize(Policy = nameof(EnumAccess.Moderator))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<PostResponse>> Create([FromBody] PostCreateRequest post)
         {
-            var response = await PostBusiness.Add((Post)post);
-            return CreatedAtAction(nameof(Post), (PostResponse)response);
+            var response = await PostBusiness.Add((Post)post, User.Account());
+            return CreatedAtAction(nameof(Create), (PostResponse)response);
+        }
+
+        /// <summary>
+        /// Sửa một bài viết
+        /// </summary>
+        /// <param name="post">Nội dung một bài viết</param>
+        /// <response code="200">Thành công</response>
+        /// <response code="400">BadRequest</response>
+        /// <response code="404">Không tìm thấy</response>
+        [HttpPut]
+        [Authorize(Policy = nameof(EnumAccess.Moderator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<PostResponse>> Update([FromBody] PostUpdateRequest post)
+        {
+            var response = await PostBusiness.Update((Post)post, User.Account());
+            return (PostResponse)response;
+        }
+
+        /// <summary>
+        /// Xóa một bài viết
+        /// </summary>
+        /// <param name="id">Id bài viết</param>
+        /// <response code="204">Xóa thành công</response>
+        /// <response code="404">Không tìm thấy</response>
+        [HttpDelete("{id:int}")]
+        [Authorize(Policy = nameof(EnumAccess.Moderator))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await PostBusiness.Delete(id, User.Account());
+            return NoContent();
         }
     }
 }
