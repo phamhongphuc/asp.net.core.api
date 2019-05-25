@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using server.DataTransfers.AccountDataTransfers;
 using server.DataTransfers.PostDataTransfers;
 using server.Models;
 
@@ -10,12 +11,20 @@ namespace server.DataTransfers
         public MappingProfile()
         {
             MappingPost();
+            MappingAccount();
         }
 
         private void MappingPost()
         {
             CreateMap<Post, PostResponse>();
-            CreateMap<PostRequest, Post>();
+        }
+        private void MappingAccount()
+        {
+            CreateMap<Account, AccountResponse>();
+            CreateMap<Account, AccountIdTransfer>().ReverseMap();
+            CreateMap<AccountLoginRequest, Account>();
+            CreateMap<AccountCreateRequest, Account>();
+            CreateMap<AccountUpdateRequest, Account>();
         }
     }
 }
