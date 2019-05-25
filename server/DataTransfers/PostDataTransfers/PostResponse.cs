@@ -1,8 +1,5 @@
-﻿using System;
+using System;
 using server.Models;
-using AutoMapper;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace server.DataTransfers.PostDataTransfers
 {
