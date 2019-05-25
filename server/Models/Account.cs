@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using Realms;
+using server.Authentication;
+using server.Businesses;
+using server.Middleware.Error;
 using server.Models.Enums;
 using server.Models.Interfaces;
 
@@ -13,7 +16,7 @@ namespace server.Models
 
         [PrimaryKey]
         public int Id { get; set; }
-        public string Pass { get; set; }
+        public string Password { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Picture { get; set; }
@@ -28,5 +31,19 @@ namespace server.Models
 
         [Backlink(nameof(Comment.Owner))]
         public IQueryable<Comment> Comments { get; }
+
+        public bool IsEqualPassword(string rawPassword)
+        {
+            return CryptoHelper.Encrypt(rawPassword).Equals(Password);
+        }
+
+        [Ignored]
+        public Account GetManagedByEmail => AccountBusiness.GetByEmail(Email);
+
+        [Ignored]
+        public Account GetManaged => AccountBusiness.Get(Id);
+
+        [Ignored]
+        public Boolean IsPresent => AccountBusiness.GetByEmail(Email) != null;
     }
 }
