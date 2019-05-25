@@ -2,7 +2,7 @@
 
 namespace server.DataTransfers.PostDataTransfers
 {
-    public class PostRequest : BaseDataTransfers<Post, PostRequest>
+    public class PostCreateRequest : BaseDataTransfers<Post, PostCreateRequest>
     {
         public string Title { get; set; }
         public string Cover { get; set; }

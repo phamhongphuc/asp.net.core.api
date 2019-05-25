@@ -7,7 +7,7 @@ using NSwag.Annotations;
 using server.Authentication;
 using server.Businesses;
 using server.Controllers.Base;
-using server.DataTransfers.PostDataTransfers;
+using server.DataTransfers.CommentDataTransfers;
 using server.Middleware;
 using server.Models;
 using server.Models.Enums;
@@ -15,80 +15,80 @@ using server.Models.Enums;
 namespace server.Controllers
 {
     /// <summary>
-    /// Post Controller
+    /// Comment Controller
     /// </summary>
     [SwaggerTag(
-        "Post",
-        Description = "Quản lý hành động của đối tượng bài đăng"
+        "Comment",
+        Description = "Quản lý hành động của đối tượng bình luận"
     )]
 
-    public class PostController : BaseController
+    public class CommentController : BaseController
     {
         /// <summary>
-        /// Lấy danh sách các bài viết
+        /// Lấy danh sách các bình luận
         /// </summary>
         [HttpGet]
-        public ActionResult<List<PostResponse>> Index()
-            => PostResponse.List(PostBusiness.List);
+        public ActionResult<List<CommentResponse>> Index()
+            => CommentResponse.List(CommentBusiness.List);
 
         /// <summary>
-        /// Lấy một bài viết
+        /// Lấy một bình luận
         /// </summary>
-        /// <param name="id">Id bài viết</param>
+        /// <param name="id">Id bình luận</param>
         /// <response code="200">Tìm thấy</response>
         /// <response code="404">Không tìm thấy</response>
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public ActionResult<PostResponse> Item(int id) => (PostResponse)PostBusiness.Get(id);
+        public ActionResult<CommentResponse> Item(int id) => (CommentResponse)CommentBusiness.Get(id);
 
         /// <summary>
-        /// Đăng một bài viết mới
+        /// Đăng một bình luận mới
         /// </summary>
-        /// <param name="post">Nội dung một bài đăng</param>
+        /// <param name="comment">Nội dung bình luận</param>
         /// <response code="201">Thành công</response>
         /// <response code="400">BadRequest</response>
         [HttpPost]
-        [Authorize(Policy = nameof(EnumAccess.Moderator))]
+        [Authorize(Policy = nameof(EnumAccess.NormalUser))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<PostResponse>> Create([FromBody] PostCreateRequest post)
+        public async Task<ActionResult<CommentResponse>> Create([FromBody] CommentCreateRequest comment)
         {
-            var response = await PostBusiness.Add((Post)post, User.Account());
-            return CreatedAtAction(nameof(Create), (PostResponse)response);
+            var response = await CommentBusiness.Add((Comment)comment, User.Account());
+            return CreatedAtAction(nameof(Create), (CommentResponse)response);
         }
 
         /// <summary>
-        /// Sửa một bài viết
+        /// Sửa một bình luận
         /// </summary>
-        /// <param name="post">Nội dung một bài viết</param>
+        /// <param name="comment">Nội dung bình luận</param>
         /// <response code="200">Thành công</response>
         /// <response code="400">BadRequest</response>
         /// <response code="404">Không tìm thấy</response>
         [HttpPut]
-        [Authorize(Policy = nameof(EnumAccess.Moderator))]
+        [Authorize(Policy = nameof(EnumAccess.NormalUser))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PostResponse>> Update([FromBody] PostUpdateRequest post)
+        public async Task<ActionResult<CommentResponse>> Update([FromBody] CommentUpdateRequest comment)
         {
-            var response = await PostBusiness.Update((Post)post, User.Account());
-            return (PostResponse)response;
+            var response = await CommentBusiness.Update((Comment)comment, User.Account());
+            return (CommentResponse)response;
         }
 
         /// <summary>
-        /// Xóa một bài viết
+        /// Xóa một bình luận
         /// </summary>
-        /// <param name="id">Id bài viết</param>
+        /// <param name="id">Id bình luận</param>
         /// <response code="204">Xóa thành công</response>
         /// <response code="404">Không tìm thấy</response>
         [HttpDelete("{id:int}")]
-        [Authorize(Policy = nameof(EnumAccess.Moderator))]
+        [Authorize(Policy = nameof(EnumAccess.NormalUser))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            await PostBusiness.Delete(id, User.Account());
+            await CommentBusiness.Delete(id, User.Account());
             return NoContent();
         }
     }

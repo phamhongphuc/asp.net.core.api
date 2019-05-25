@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Realms;
-using server.Models.Enums;
+using server.Businesses;
+using server.Middleware.Error;
 using server.Models.Interfaces;
 
 namespace server.Models
@@ -18,9 +18,22 @@ namespace server.Models
         public Account Owner { get; set; }
 
         public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Modified { get; set; }
+        public DateTimeOffset? Modified { get; set; }
 
         [Backlink(nameof(Comment.Post))]
         public IQueryable<Comment> Comments { get; }
+
+        public Boolean IsOwner(Account account) => Owner.Id == account.Id;
+
+        [Ignored]
+        public Post GetManaged
+        {
+            get
+            {
+                var post = PostBusiness.Get(Id);
+                if (post == null) throw new Error404NotFound<Post>(Id);
+                return post;
+            }
+        }
     }
 }
