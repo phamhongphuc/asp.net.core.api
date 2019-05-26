@@ -1,0 +1,24 @@
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.box-sizing-content-box {
+    box-sizing: content-box;
+}
+
+.flex-1 {
+    flex: 1 !important;
+}
+
+.row-like {
+    @include row-like;
+    > .d-flex {
+        flex-wrap: wrap;
+    }
+}
+
+@each $color, $value in $theme-colors {
+    .text-hover-#{$color}:hover {
+        color: $value !important;
+    }
+}

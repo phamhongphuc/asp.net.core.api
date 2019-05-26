@@ -1,0 +1,14 @@
+::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    background-clip: padding-box;
+    border: 0.125rem solid transparent;
+    border-radius: 0.5rem;
+}
+::-webkit-resizer,
+::-webkit-scrollbar-corner {
+    background: transparent;
+}

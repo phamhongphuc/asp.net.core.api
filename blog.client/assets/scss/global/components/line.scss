@@ -1,0 +1,11 @@
+.line {
+    background-color: $border-color;
+    &.hr {
+        width: 100%;
+        height: 1px;
+    }
+    &.vr {
+        width: 1px;
+        height: 100%;
+    }
+}
