@@ -1,6 +1,3 @@
-pool:
-  vmImage: "ubuntu-16.04"
-
 variables:
   target_folder: $(NUGET_PACKAGES)
   sourcefolder: $(Build.SourcesDirectory)
@@ -14,31 +11,56 @@ variables:
   obj_cache: $(target_folder)/$(obj_path)
   obj_project: $(sourcefolder)/$(obj_path)
 
-steps:
-  - task: RestoreAndSaveCache@1
-    displayName: "[Server - Restore Cache] Restore artifact based on: $(key_file)"
-    inputs:
-      keyfile: $(key_file)
-      targetfolder: "$(target_folder)"
-      vstsFeed: $(dotnet_core_artifacts)
+jobs:
+  - job: DotNetCore
+    pool:
+      vmImage: "ubuntu-16.04"
+    steps:
+      - task: RestoreAndSaveCache@1
+        displayName: "[Cache] Restore artifact based on: $(key_file)"
+        inputs:
+          keyfile: $(key_file)
+          targetfolder: "$(target_folder)"
+          vstsFeed: $(dotnet_core_artifacts)
 
-  - script: |
-      mkdir -p $(obj_cache)
-      mkdir -p $(obj_project)
-      cp $(obj_cache)/* $(obj_project)/ || true
-    displayName: "[Copy] Copy from cache"
+      - script: |
+          mkdir -p $(obj_cache)
+          mkdir -p $(obj_project)
+          cp $(obj_cache)/* $(obj_project)/ || true
+        displayName: "[Copy] Copy from cache"
 
-  - script: dotnet --info
-    displayName: "[Server] dotnet --info"
+      - script: dotnet --info
+        displayName: "[Server] dotnet --info"
 
-  - script: dotnet restore
-    displayName: "[Server] Dotnet restore"
+      - script: dotnet restore
+        displayName: "[Server] Dotnet restore"
 
-  - script: |
-      mkdir -p $(obj_cache)
-      mkdir -p $(obj_project)
-      cp $(obj_project)/* $(obj_cache)/ || true
-    displayName: "[Copy] Copy to cache"
+      - script: |
+          mkdir -p $(obj_cache)
+          mkdir -p $(obj_project)
+          cp $(obj_project)/* $(obj_cache)/ || true
+        displayName: "[Copy] Copy to cache"
 
-  - script: dotnet build --no-restore
-    displayName: "[Server] dotnet build"
+      - script: dotnet build --no-restore
+        displayName: "[Server] dotnet build"
+  - job: NodeJS
+    pool:
+      vmImage: "ubuntu-16.04"
+    steps:
+      - task: RestoreAndSaveCache@1
+        displayName: "[Cache] Restore artifact based on: yarn.lock"
+        inputs:
+          keyfile: '**/yarn.lock, !**/node_modules/**/yarn.lock, !**/.*/**/yarn.lock'
+          targetfolder: '**/node_modules, !**/node_modules/**/node_modules'
+          vstsFeed: '$(nodejs_artifacts)'
+      
+      - task: UseNode@1
+        inputs:
+          version: '10.15.3'
+        displayName: "[Client] Install NodeJS"
+      
+      - script: |
+          cd blog.client
+          yarn
+          yarn build
+        displayName: "[Client] yarn install & yarn build"
