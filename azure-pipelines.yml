@@ -2,37 +2,30 @@ pool:
   vmImage: "ubuntu-16.04"
 
 variables:
-  NUGET_PACKAGES: $(Build.SourcesDirectory)/packages
-  vstsFeed: "d09745d0-213d-4136-bcd1-78ba4998212a"
+  target_folder: $(NUGET_PACKAGES)
+  sourcefolder: $(Build.SourcesDirectory)
 
-  keyfile: "**/*.csproj, **/*.sln"
-  objpath: "blog.server/obj"
-  objcache: $(NUGET_PACKAGES)/$(objpath)
-  objproject: $(Build.SourcesDirectory)/$(objpath)
+  NUGET_PACKAGES: $(sourcefolder)/packages
+  dotnet_core_artifacts: "d09745d0-213d-4136-bcd1-78ba4998212a"
+  nodejs_artifacts: "112b6df3-39ce-4dc9-a4ed-df6940f01b04"
+
+  key_file: "**/*.csproj, **/*.sln"
+  obj_path: "blog.server/obj"
+  obj_cache: $(target_folder)/$(obj_path)
+  obj_project: $(sourcefolder)/$(obj_path)
 
 steps:
   - task: RestoreAndSaveCache@1
-    displayName: "[Server - Restore Cache] Restore artifact based on: $(keyfile)"
+    displayName: "[Server - Restore Cache] Restore artifact based on: $(key_file)"
     inputs:
-      keyfile: $(keyfile)
-      targetfolder: "$(NUGET_PACKAGES)"
-      vstsFeed: $(vstsFeed)
+      keyfile: $(key_file)
+      targetfolder: "$(target_folder)"
+      vstsFeed: $(dotnet_core_artifacts)
 
   - script: |
-      mkdir -p $(objcache)
-      mkdir -p $(objproject)
-
-      echo "[ls root]"
-      ls
-
-      echo "[ls $(NUGET_PACKAGES)]"
-      ls $(NUGET_PACKAGES)
-
-      echo "[ls $(objcache)]"
-      ls $(objcache)
-
-      echo "[cp $(objcache)/* $(objproject)/]"
-      cp $(objcache)/* $(objproject)/ || true
+      mkdir -p $(obj_cache)
+      mkdir -p $(obj_project)
+      cp $(obj_cache)/* $(obj_project)/ || true
     displayName: "[Copy] Copy from cache"
 
   - script: dotnet --info
@@ -42,20 +35,9 @@ steps:
     displayName: "[Server] Dotnet restore"
 
   - script: |
-      mkdir -p $(objcache)
-      mkdir -p $(objproject)
-
-      echo "[ls root]"
-      ls
-
-      echo "[ls blog.server]"
-      ls blog.server
-
-      echo "[ls $(objproject)]"
-      ls $(objproject)
-
-      echo "[cp $(objproject)/* $(objcache)/]"
-      cp $(objproject)/* $(objcache)/ || true
+      mkdir -p $(obj_cache)
+      mkdir -p $(obj_project)
+      cp $(obj_project)/* $(obj_cache)/ || true
     displayName: "[Copy] Copy to cache"
 
   - script: dotnet build --no-restore
