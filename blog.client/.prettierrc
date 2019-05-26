@@ -17,6 +17,12 @@
                 ".gqlconfig"
             ],
             "options": { "parser": "json" }
+        },
+        {
+            "files": "package.json",
+            "options": {
+                "tabWidth": 2
+            }
         }
     ]
 }
