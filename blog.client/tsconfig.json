@@ -14,7 +14,7 @@
         "paths": {
             "~/*": ["./*"]
         },
-        "types": ["node"],
+        "types": ["node", "webpack-env"],
         "esModuleInterop": true,
         "allowJs": true,
         "sourceMap": true,
