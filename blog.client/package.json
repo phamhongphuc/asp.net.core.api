@@ -6,7 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "dev:s": "cd ../blog.server && dotnet run",
     "build": "nuxt build",
+    "build:s": "cd ../blog.server && dotnet build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "prettier:fix": "prettier ** --write",
