@@ -110,6 +110,13 @@ namespace blog.server
                 RealmDatabase.Config.ShouldDeleteIfMigrationNeeded = true;
             }
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+            );
+
             app.UseMiddleware<ExceptionCatcherMiddleware>();
 
             app.UseSwagger();
