@@ -7110,7 +7110,7 @@ nuxt-property-decorator@^2.1.3:
     vuex "^3.1.0"
     vuex-class "^0.3.1"
 
-nuxt@^2.4.0:
+nuxt@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-2.7.1.tgz#fa1caf0db71a9c99046aea7d5829c3de63b4b31c"
   integrity sha512-mm+PYk818gJ1rbJOiU9q/fEOUTf+kWJmMewoUJu2vVDcQI9x8FXuvketZ4APwjc9IXnKWIjpCaYpAXDjfkC8KQ==
