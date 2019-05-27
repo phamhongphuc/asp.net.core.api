@@ -42,6 +42,7 @@ export default {
             'assets/scss/after/_after.scss',
         ],
     },
+    plugins: [{ src: '~/plugins/component' }],
     build: {
         extend(config, { isDev, isClient }) {
             if (isDev && isClient) {
