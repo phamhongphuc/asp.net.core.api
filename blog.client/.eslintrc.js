@@ -33,13 +33,7 @@ const config = {
             jsx: false,
         },
     },
-    plugins: [
-        'standard',
-        'vue',
-        'import',
-        'node',
-        '@typescript-eslint',
-    ],
+    plugins: ['standard', 'vue', 'import', 'node', '@typescript-eslint'],
     settings: {
         cache: true,
         'import/resolver': {
