@@ -200,7 +200,13 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 200) {
+        if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+        } else if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
@@ -212,12 +218,6 @@ export class Client implements IClient {
             let resultData404  = _responseText;
             result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -256,18 +256,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
+        if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
             result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
             return result200;
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -441,18 +441,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? AccountResponse.fromJS(resultData201) : <any>null;
-            return result201;
-        } else if (status === 400) {
+        if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
             let resultData400  = _responseText;
             result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result400);
+        } else if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = resultData201 ? AccountResponse.fromJS(resultData201) : <any>null;
+            return result201;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -586,18 +586,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? CommentResponse.fromJS(resultData201) : <any>null;
-            return result201;
-        } else if (status === 400) {
+        if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
             let resultData400  = _responseText;
             result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result400);
+        } else if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = resultData201 ? CommentResponse.fromJS(resultData201) : <any>null;
+            return result201;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -693,18 +693,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
+        if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
             result200 = resultData200 ? CommentResponse.fromJS(resultData200) : <any>null;
             return result200;
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -884,7 +884,13 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 400) {
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = resultData200 ? PostResponse.fromJS(resultData200) : <any>null;
+            return result200;
+        } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
             let resultData400  = _responseText;
@@ -896,12 +902,6 @@ export class Client implements IClient {
             let resultData404  = _responseText;
             result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? PostResponse.fromJS(resultData200) : <any>null;
-            return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1452,7 +1452,7 @@ export interface IAccountCreateRequest extends IBaseDataTransfersOfAccountAndAcc
 }
 
 export class AccountLoginResponse implements IAccountLoginResponse {
-    token?: string | null;
+    token!: string;
 
     constructor(data?: IAccountLoginResponse) {
         if (data) {
@@ -1484,7 +1484,7 @@ export class AccountLoginResponse implements IAccountLoginResponse {
 }
 
 export interface IAccountLoginResponse {
-    token?: string | null;
+    token: string;
 }
 
 export class BaseDataTransfersOfAccountAndAccountLoginRequest implements IBaseDataTransfersOfAccountAndAccountLoginRequest {
