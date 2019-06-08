@@ -17,7 +17,7 @@
     "type:fix": "run-s prettier:fix \"lint:* --fix\""
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.5.2",
+    "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/style-resources": "^0.1.2",
     "bootstrap-vue": "2.0.0-rc.22",
     "nuxt": "^2.8.1",
