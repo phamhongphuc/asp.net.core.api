@@ -30,9 +30,13 @@ export default {
     css: [{ src: '~/assets/scss/main.scss', lang: 'scss' }],
     loading: { color: '#fff' },
     modules: [
+        '@nuxtjs/axios',
         '@nuxtjs/style-resources',
         ['bootstrap-vue/nuxt', { css: false }],
     ],
+    axios: {
+        baseURL: 'http://localhost:5000/api/',
+    },
     styleResources: {
         scss: [
             'assets/scss/before/_before.scss',
