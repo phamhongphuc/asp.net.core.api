@@ -200,24 +200,24 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 200) {
+        if (status === 400) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
-            return result200;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
             let resultData404  = _responseText;
             result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 400) {
+        } else if (status === 200) {
             const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
+            return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -256,18 +256,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
+        if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
             result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
             return result200;
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -346,15 +346,15 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(<any>null);
-        } else if (status === 404) {
+        if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
             let resultData404  = _responseText;
             result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result404);
+        } else if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(<any>null);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -393,15 +393,15 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 404) {
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(<any>null);
+        } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
             let resultData404  = _responseText;
             result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(<any>null);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -693,18 +693,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
+        if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
             result200 = resultData200 ? CommentResponse.fromJS(resultData200) : <any>null;
             return result200;
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -833,18 +833,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status === 201) {
+        if (status === 201) {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
             result201 = resultData201 ? PostResponse.fromJS(resultData201) : <any>null;
             return result201;
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -890,18 +890,18 @@ export class Client implements IClient {
             let resultData400  = _responseText;
             result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
             return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
             result200 = resultData200 ? PostResponse.fromJS(resultData200) : <any>null;
             return result200;
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -940,18 +940,18 @@ export class Client implements IClient {
         if (response.headers && response.headers.forEach) { 
             response.headers.forEach((v: any, k: any) => _headers[k] = v);
         };
-        if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
+        if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
             result200 = resultData200 ? PostResponse.fromJS(resultData200) : <any>null;
             return result200;
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
+            return throwException("A server error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1038,10 +1038,10 @@ export interface IBaseDataTransfersOfAccountAndAccountResponse {
 
 export class AccountResponse extends BaseDataTransfersOfAccountAndAccountResponse implements IAccountResponse {
     id!: number;
-    password?: string | null;
-    name?: string | null;
-    email?: string | null;
-    picture?: string | null;
+    password!: string;
+    name!: string;
+    email!: string;
+    picture!: string;
     access!: EnumAccess;
     gender!: EnumGender;
     joined!: moment.Moment;
@@ -1088,10 +1088,10 @@ export class AccountResponse extends BaseDataTransfersOfAccountAndAccountRespons
 
 export interface IAccountResponse extends IBaseDataTransfersOfAccountAndAccountResponse {
     id: number;
-    password?: string | null;
-    name?: string | null;
-    email?: string | null;
-    picture?: string | null;
+    password: string;
+    name: string;
+    email: string;
+    picture: string;
     access: EnumAccess;
     gender: EnumGender;
     joined: moment.Moment;
@@ -1155,8 +1155,8 @@ export interface IErrorResponse {
 }
 
 export class AccountChangePasswordRequest implements IAccountChangePasswordRequest {
-    password?: string | null;
-    newPassword?: string | null;
+    password!: string;
+    newPassword!: string;
 
     constructor(data?: IAccountChangePasswordRequest) {
         if (data) {
@@ -1190,8 +1190,8 @@ export class AccountChangePasswordRequest implements IAccountChangePasswordReque
 }
 
 export interface IAccountChangePasswordRequest {
-    password?: string | null;
-    newPassword?: string | null;
+    password: string;
+    newPassword: string;
 }
 
 export class BaseDataTransfersOfAccountAndAccountUpdateRequest implements IBaseDataTransfersOfAccountAndAccountUpdateRequest {
@@ -1225,8 +1225,8 @@ export interface IBaseDataTransfersOfAccountAndAccountUpdateRequest {
 }
 
 export class AccountUpdateRequest extends BaseDataTransfersOfAccountAndAccountUpdateRequest implements IAccountUpdateRequest {
-    name?: string | null;
-    picture?: string | null;
+    name!: string;
+    picture!: string;
     gender!: EnumGender;
 
     constructor(data?: IAccountUpdateRequest) {
@@ -1260,13 +1260,13 @@ export class AccountUpdateRequest extends BaseDataTransfersOfAccountAndAccountUp
 }
 
 export interface IAccountUpdateRequest extends IBaseDataTransfersOfAccountAndAccountUpdateRequest {
-    name?: string | null;
-    picture?: string | null;
+    name: string;
+    picture: string;
     gender: EnumGender;
 }
 
 export class AccountUpdateAccessRequest implements IAccountUpdateAccessRequest {
-    account?: AccountIdTransfer | null;
+    account!: AccountIdTransfer;
     access!: EnumAccess;
 
     constructor(data?: IAccountUpdateAccessRequest) {
@@ -1276,11 +1276,14 @@ export class AccountUpdateAccessRequest implements IAccountUpdateAccessRequest {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
+        if (!data) {
+            this.account = new AccountIdTransfer();
+        }
     }
 
     init(data?: any) {
         if (data) {
-            this.account = data["account"] ? AccountIdTransfer.fromJS(data["account"]) : <any>null;
+            this.account = data["account"] ? AccountIdTransfer.fromJS(data["account"]) : new AccountIdTransfer();
             this.access = data["access"] !== undefined ? data["access"] : <any>null;
         }
     }
@@ -1301,7 +1304,7 @@ export class AccountUpdateAccessRequest implements IAccountUpdateAccessRequest {
 }
 
 export interface IAccountUpdateAccessRequest {
-    account?: AccountIdTransfer | null;
+    account: AccountIdTransfer;
     access: EnumAccess;
 }
 
@@ -1337,7 +1340,7 @@ export interface IBaseDataTransfersOfAccountAndAccountIdTransfer {
 
 export class AccountIdTransfer extends BaseDataTransfersOfAccountAndAccountIdTransfer implements IAccountIdTransfer {
     id!: number;
-    email?: string | null;
+    email!: string;
 
     constructor(data?: IAccountIdTransfer) {
         super(data);
@@ -1369,7 +1372,7 @@ export class AccountIdTransfer extends BaseDataTransfersOfAccountAndAccountIdTra
 
 export interface IAccountIdTransfer extends IBaseDataTransfersOfAccountAndAccountIdTransfer {
     id: number;
-    email?: string | null;
+    email: string;
 }
 
 export class BaseDataTransfersOfAccountAndAccountCreateRequest implements IBaseDataTransfersOfAccountAndAccountCreateRequest {
@@ -1403,10 +1406,10 @@ export interface IBaseDataTransfersOfAccountAndAccountCreateRequest {
 }
 
 export class AccountCreateRequest extends BaseDataTransfersOfAccountAndAccountCreateRequest implements IAccountCreateRequest {
-    password?: string | null;
-    name?: string | null;
-    email?: string | null;
-    picture?: string | null;
+    password!: string;
+    name!: string;
+    email!: string;
+    picture!: string;
     gender!: EnumGender;
 
     constructor(data?: IAccountCreateRequest) {
@@ -1444,15 +1447,15 @@ export class AccountCreateRequest extends BaseDataTransfersOfAccountAndAccountCr
 }
 
 export interface IAccountCreateRequest extends IBaseDataTransfersOfAccountAndAccountCreateRequest {
-    password?: string | null;
-    name?: string | null;
-    email?: string | null;
-    picture?: string | null;
+    password: string;
+    name: string;
+    email: string;
+    picture: string;
     gender: EnumGender;
 }
 
 export class AccountLoginResponse implements IAccountLoginResponse {
-    token?: string | null;
+    token!: string;
 
     constructor(data?: IAccountLoginResponse) {
         if (data) {
@@ -1484,7 +1487,7 @@ export class AccountLoginResponse implements IAccountLoginResponse {
 }
 
 export interface IAccountLoginResponse {
-    token?: string | null;
+    token: string;
 }
 
 export class BaseDataTransfersOfAccountAndAccountLoginRequest implements IBaseDataTransfersOfAccountAndAccountLoginRequest {
@@ -1518,8 +1521,8 @@ export interface IBaseDataTransfersOfAccountAndAccountLoginRequest {
 }
 
 export class AccountLoginRequest extends BaseDataTransfersOfAccountAndAccountLoginRequest implements IAccountLoginRequest {
-    email?: string | null;
-    password?: string | null;
+    email!: string;
+    password!: string;
 
     constructor(data?: IAccountLoginRequest) {
         super(data);
@@ -1550,8 +1553,8 @@ export class AccountLoginRequest extends BaseDataTransfersOfAccountAndAccountLog
 }
 
 export interface IAccountLoginRequest extends IBaseDataTransfersOfAccountAndAccountLoginRequest {
-    email?: string | null;
-    password?: string | null;
+    email: string;
+    password: string;
 }
 
 export class BaseDataTransfersOfCommentAndCommentResponse implements IBaseDataTransfersOfCommentAndCommentResponse {

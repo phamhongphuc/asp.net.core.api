@@ -29,10 +29,17 @@ export default {
     },
     css: [{ src: '~/assets/scss/main.scss', lang: 'scss' }],
     loading: { color: '#fff' },
-    modules: [
-        '@nuxtjs/style-resources',
-        ['bootstrap-vue/nuxt', { css: false }],
-    ],
+    modules: ['@nuxtjs/axios', '@nuxtjs/style-resources', 'bootstrap-vue/nuxt'],
+    router: {
+        middleware: 'auth',
+    },
+    axios: {
+        baseURL: 'http://localhost:5000/api/',
+    },
+    bootstrapVue: {
+        bootstrapCSS: false,
+        bootstrapVueCSS: false,
+    },
     styleResources: {
         scss: [
             'assets/scss/before/_before.scss',
@@ -42,7 +49,7 @@ export default {
             'assets/scss/after/_after.scss',
         ],
     },
-    plugins: [{ src: '~/plugins/component' }],
+    plugins: [{ src: '~/plugins/component' }, { src: '~/plugins/vuelidate' }],
     build: {
         extend(config, { isDev, isClient }) {
             if (isDev && isClient) {

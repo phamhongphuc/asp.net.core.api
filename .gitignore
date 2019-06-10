@@ -345,6 +345,3 @@ MigrationBackup/
 
 # Ignore RealmWeaver.Fody.dll
 Tools/
-
-# Ignore Realm Database File
-server/Database

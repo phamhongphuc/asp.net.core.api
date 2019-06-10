@@ -1,10 +1,5 @@
 <template>
-    <b-collapse
-        v-if="isShow"
-        :id="id"
-        :visible="visible"
-        @input="$emit('input', $event)"
-    >
+    <b-collapse :id="id" :visible="visible" @input="$emit('input', $event)">
         <slot />
     </b-collapse>
 </template>
@@ -24,8 +19,5 @@ export default class extends Vue {
 
     @Prop({ required: true, type: String, default: '' })
     id!: string;
-
-    @Prop({ default: false, type: Boolean })
-    autoPermission!: boolean;
 }
 </script>

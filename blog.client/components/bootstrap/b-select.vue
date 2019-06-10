@@ -1,19 +1,18 @@
 <template>
-    <div :class="{ 'has-icon': icon !== null }" class="b-input">
+    <div :class="{ 'has-icon': icon !== null }" class="b-select">
         <icon- v-if="icon" :i="icon" />
-        <b-input
+        <b-form-select
             ref="input"
-            :value="value"
-            :type="type"
             :aria-invalid="ariaInvalid"
-            :readonly="readonly"
-            :plaintext="plaintext"
-            :autocomplete="autocomplete"
-            :placeholder="placeholder"
-            :formatter="formatter"
-            :lazy-formatter="lazyFormatter"
+            :disabled-field="disabledField"
+            :html-field="htmlField"
+            :multiple="multiple"
+            :options="options"
+            :select-size="selectSize"
             :state="state"
-            :disabled="disabled"
+            :text-field="textField"
+            :value-field="valueField"
+            :value="value"
             @input="$emit('input', $event)"
             @focus="$emit('update:focus', true)"
             @blur="$emit('update:focus', false)"
@@ -21,22 +20,43 @@
     </div>
 </template>
 <script lang="ts">
-import { Component, mixins } from 'nuxt-property-decorator';
-import { InputProps, IconProps, StateProps } from '~/components/mixins';
+import { Component, Prop, mixins } from 'nuxt-property-decorator';
+import { IconProps, StateProps, OptionProps } from '~/components/mixins';
 
 @Component({
     name: 'b-input-',
 })
-export default class extends mixins<IconProps, InputProps, StateProps>(
+export default class extends mixins<IconProps, StateProps, OptionProps>(
     IconProps,
-    InputProps,
     StateProps,
-) {}
+    OptionProps,
+) {
+    @Prop({})
+    value!: any;
+
+    @Prop({
+        type: Boolean,
+        default: false,
+    })
+    multiple!: boolean;
+
+    @Prop({
+        type: Number,
+        default: 0,
+    })
+    selectSize!: number;
+
+    @Prop({
+        type: [Boolean, String],
+        default: false,
+    })
+    ariaInvalid!: boolean | string;
+}
 </script>
 <style lang="scss">
 $input-icon-margin-left: 0.25rem;
 
-.b-input {
+.b-select {
     position: relative;
     display: flex;
     transition: border 0.2s;
@@ -63,9 +83,10 @@ $input-icon-margin-left: 0.25rem;
             outline: none;
         }
     }
+
     &.circle {
         &,
-        input {
+        select {
             border-radius: calc(0.5 * #{$input-height});
         }
         > .icon {
@@ -74,7 +95,7 @@ $input-icon-margin-left: 0.25rem;
     }
 
     &.has-icon {
-        > input {
+        > select {
             padding-left: calc(
                 #{$input-height-inner} + #{$input-height-border} + #{$input-icon-margin-left}
             );

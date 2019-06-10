@@ -1,6 +1,5 @@
 <template>
     <b-nav-item
-        v-if="isShow"
         :href="href"
         :rel="rel"
         :target="target"
