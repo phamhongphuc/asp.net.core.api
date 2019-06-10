@@ -29,13 +29,13 @@ export default {
     },
     css: [{ src: '~/assets/scss/main.scss', lang: 'scss' }],
     loading: { color: '#fff' },
-    modules: [
-        '@nuxtjs/axios',
-        '@nuxtjs/style-resources',
-        ['bootstrap-vue/nuxt', { css: false }],
-    ],
+    modules: ['@nuxtjs/axios', '@nuxtjs/style-resources', 'bootstrap-vue/nuxt'],
     axios: {
         baseURL: 'http://localhost:5000/api/',
+    },
+    bootstrapVue: {
+        bootstrapCSS: false,
+        bootstrapVueCSS: false,
     },
     styleResources: {
         scss: [
