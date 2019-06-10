@@ -17,25 +17,25 @@ export const state = (): UserState => ({
 });
 
 export const actions: ActionTree<UserState, RootState> = {
+    setToken(context, token: string) {
+        Cookies.set('token', token);
+        this.$axios.setToken(token, 'Bearer');
+    },
+
     async login({ dispatch }, payload: IAccountLoginRequest) {
         const data = await this.$axios.$post<IAccountLoginResponse>(
             '/account/login',
             payload,
         );
 
-        dispatch('setToken', data.token);
-        dispatch('getProfile');
+        await dispatch('setToken', data.token);
+        await dispatch('getProfile');
         this.$router.push('/');
     },
 
     async getProfile({ commit }) {
         const user = await this.$axios.get<AccountResponse>('/account/me');
         commit('setProfile', user);
-    },
-
-    setToken(context, token: string) {
-        Cookies.set('token', token);
-        this.$axios.setToken(token, 'Bearer');
     },
 
     async register(context, payload: IAccountCreateRequest) {
@@ -58,9 +58,11 @@ export const actions: ActionTree<UserState, RootState> = {
         return true;
     },
 
-    async logout() {
+    async logout({ commit }) {
+        commit('setProfile', undefined);
         Cookies.remove('token');
         this.$axios.setToken(false);
+        this.$router.push('/login');
     },
 };
 
