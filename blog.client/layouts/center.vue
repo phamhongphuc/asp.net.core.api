@@ -1,12 +1,12 @@
 <template>
-    <div id="center">
+    <div id="center-layout">
         <div class="shadow-lg p-4 rounded m-2">
             <nuxt />
         </div>
     </div>
 </template>
 <style lang="scss">
-#center {
+#center-layout {
     position: fixed;
     display: flex;
     align-items: center;
