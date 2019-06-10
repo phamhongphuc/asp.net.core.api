@@ -20,6 +20,8 @@
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/style-resources": "^0.1.2",
     "bootstrap-vue": "2.0.0-rc.22",
+    "cookie": "^0.4.0",
+    "js-cookie": "^2.2.0",
     "moment": "^2.24.0",
     "nuxt": "^2.8.1",
     "nuxt-property-decorator": "^2.3.0",
@@ -29,6 +31,8 @@
   },
   "devDependencies": {
     "@nuxt/typescript": "^2.8.1",
+    "@types/cookie": "^0.3.3",
+    "@types/js-cookie": "^2.2.2",
     "@types/webpack-env": "^1.13.9",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
