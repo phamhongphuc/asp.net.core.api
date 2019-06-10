@@ -1,9 +1,10 @@
+import { ActionTree, MutationTree } from 'vuex/types/index';
 import {
     AccountResponse,
-    AccountLoginRequest,
-    AccountLoginResponse,
+    IAccountCreateRequest,
+    IAccountLoginRequest,
+    IAccountLoginResponse,
 } from '~/types/rest';
-import { ActionTree, MutationTree } from 'vuex/types/index';
 import { RootState } from '.';
 
 export interface UserState {
@@ -15,8 +16,8 @@ export const state = (): UserState => ({
 });
 
 export const actions: ActionTree<UserState, RootState> = {
-    async login({ commit }, payload: AccountLoginRequest) {
-        const data = await this.$axios.$post<AccountLoginResponse>(
+    async login({ commit }, payload: IAccountLoginRequest) {
+        const data = await this.$axios.$post<IAccountLoginResponse>(
             '/account/login',
             payload,
         );
@@ -24,6 +25,18 @@ export const actions: ActionTree<UserState, RootState> = {
         const user = await this.$axios.get<AccountResponse>('/account/me');
         commit('setUser', user);
         this.$router.push('/home');
+    },
+
+    async register(context, payload: IAccountCreateRequest) {
+        await this.$axios.$post<IAccountCreateRequest>(
+            '/account/register',
+            payload,
+        );
+        this.$router.push('/login');
+    },
+
+    async logout() {
+        this.$axios.setToken(false);
     },
 };
 
