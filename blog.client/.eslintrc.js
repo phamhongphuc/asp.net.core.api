@@ -82,6 +82,7 @@ const config = {
                     path.join('./'),
                     path.join(__dirname, 'node_modules/@nuxt/builder'),
                     path.join(__dirname, 'node_modules/@nuxt/vue-app'),
+                    path.join(__dirname, 'node_modules/@nuxtjs/axios'),
                     path.join(__dirname, 'node_modules/nuxt'),
                 ],
             },
@@ -91,6 +92,7 @@ const config = {
             { html: { void: 'always', normal: 'always', component: 'always' } },
         ],
         'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+        'vue/no-v-html': 'off',
     },
     overrides: [
         {

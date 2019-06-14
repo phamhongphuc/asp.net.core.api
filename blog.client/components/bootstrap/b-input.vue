@@ -46,6 +46,7 @@ $input-icon-margin-left: 0.25rem;
         width: $input-height;
         min-width: $input-height;
         min-height: $input-height;
+        margin-left: $input-icon-margin-left / 2;
         font-size: 1rem;
         line-height: $input-height;
         text-align: center;
@@ -69,7 +70,7 @@ $input-icon-margin-left: 0.25rem;
             border-radius: calc(0.5 * #{$input-height});
         }
         > .icon {
-            margin-left: $input-icon-margin-left;
+            margin-left: $input-icon-margin-left / 2;
         }
     }
 

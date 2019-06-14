@@ -26,6 +26,7 @@ export default class extends Vue {
             },
             class: {
                 image: true,
+                'on-error': this.isError,
                 'd-none': !this.isLoad,
                 'd-block': this.isLoad,
             },

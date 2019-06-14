@@ -28,8 +28,8 @@ namespace blog.server.Controllers
         /// Lấy danh sách các bài viết
         /// </summary>
         [HttpGet]
-        public ActionResult<List<PostResponse>> Index()
-            => PostResponse.List(PostBusiness.List);
+        public ActionResult<List<PostListResponse>> Index()
+            => PostListResponse.List(PostBusiness.List);
 
         /// <summary>
         /// Lấy một bài viết
@@ -70,10 +70,10 @@ namespace blog.server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PostResponse>> Update([FromBody] PostUpdateRequest post)
+        public async Task<ActionResult<PostListResponse>> Update([FromBody] PostUpdateRequest post)
         {
             var response = await PostBusiness.Update((Post)post, User.Account());
-            return (PostResponse)response;
+            return (PostListResponse)response;
         }
 
         /// <summary>

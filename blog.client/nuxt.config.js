@@ -49,7 +49,12 @@ export default {
             'assets/scss/after/_after.scss',
         ],
     },
-    plugins: [{ src: '~/plugins/component' }, { src: '~/plugins/vuelidate' }],
+    plugins: [
+        { src: '~/plugins/component' },
+        { src: '~/plugins/vuelidate' },
+        { src: '~/plugins/moment' },
+        { src: '~/plugins/global', ssr: false },
+    ],
     build: {
         extend(config, { isDev, isClient }) {
             if (isDev && isClient) {

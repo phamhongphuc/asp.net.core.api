@@ -1,5 +1,7 @@
-import { UserState } from './user';
+import { PostState } from './post';
+import { AuthState } from './auth';
 
 export interface RootState {
-    user: UserState;
+    post: PostState;
+    auth: AuthState;
 }

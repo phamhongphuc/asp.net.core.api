@@ -5,7 +5,7 @@ using blog.server.Models.Enums;
 
 namespace blog.server.DataTransfers.AccountDataTransfers
 {
-    public class AccountResponse : BaseDataTransfers<Account, AccountResponse>
+    public class AccountSimpleResponse : BaseDataTransfers<Account, AccountSimpleResponse>
     {
         [Required]
         public int Id { get; set; }
@@ -21,11 +21,5 @@ namespace blog.server.DataTransfers.AccountDataTransfers
 
         [Required]
         public EnumAccess Access { get; set; }
-
-        [Required]
-        public EnumGender Gender { get; set; }
-
-        [Required]
-        public DateTimeOffset Joined { get; set; }
     }
 }

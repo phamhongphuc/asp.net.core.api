@@ -7,1008 +7,11 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import * as moment from 'moment';
 
-export interface IClient {
-    /**
-     * Lấy danh sách các tài khoản
-     */
-    account_List(): Promise<AccountResponse[] | null>;
-    /**
-     * Chỉnh Sửa thông tin tài khoản
-     * @param account Thông tin tài khoản
-     * @return Thành công
-     */
-    account_Update(account: AccountUpdateRequest): Promise<AccountResponse | null>;
-    /**
-     * Lấy thông tin của một tài khoản
-     * @param id Id tài khoản
-     * @return Tìm thấy
-     */
-    account_GetById(id: number): Promise<AccountResponse | null>;
-    /**
-     * Lấy thông tin tài khoản của chính mình
-     * @return Tìm thấy
-     */
-    account_Me(): Promise<AccountResponse | null>;
-    /**
-     * Đổi mật khẩu cho tài khoản
-     * @param request Thông tin mật khẩu
-     * @return Đổi mật khẩu thành công
-     */
-    account_ChangePassword(request: AccountChangePasswordRequest): Promise<void>;
-    /**
-     * Phân quyền, cập nhật quyền
-     * @param request Thông tin tài khoản và quyền mới
-     * @return Đổi mật khẩu thành công
-     */
-    account_UpdateAccess(request: AccountUpdateAccessRequest): Promise<void>;
-    /**
-     * Đăng ký mới một tài khoản
-     * @param account Thông tin tài khoản
-     * @return Thành công
-     */
-    account_Register(account: AccountCreateRequest): Promise<AccountResponse | null>;
-    /**
-     * Đăng nhập
-     * @param account Thông tin đăng nhập
-     * @return Thành công
-     */
-    account_Login(account: AccountLoginRequest): Promise<AccountLoginResponse | null>;
-    /**
-     * Lấy danh sách các bình luận
-     */
-    comment_Index(): Promise<CommentResponse[] | null>;
-    /**
-     * Đăng một bình luận mới
-     * @param comment Nội dung bình luận
-     * @return Thành công
-     */
-    comment_Create(comment: CommentCreateRequest): Promise<CommentResponse | null>;
-    /**
-     * Sửa một bình luận
-     * @param comment Nội dung bình luận
-     * @return Thành công
-     */
-    comment_Update(comment: CommentUpdateRequest): Promise<CommentResponse | null>;
-    /**
-     * Lấy một bình luận
-     * @param id Id bình luận
-     * @return Tìm thấy
-     */
-    comment_Item(id: number): Promise<CommentResponse | null>;
-    /**
-     * Xóa một bình luận
-     * @param id Id bình luận
-     * @return Xóa thành công
-     */
-    comment_Delete(id: number): Promise<void>;
-    /**
-     * Lấy danh sách các bài viết
-     */
-    post_Index(): Promise<PostResponse[] | null>;
-    /**
-     * Đăng một bài viết mới
-     * @param post Nội dung một bài đăng
-     * @return Thành công
-     */
-    post_Create(post: PostCreateRequest): Promise<PostResponse | null>;
-    /**
-     * Sửa một bài viết
-     * @param post Nội dung một bài viết
-     * @return Thành công
-     */
-    post_Update(post: PostUpdateRequest): Promise<PostResponse | null>;
-    /**
-     * Lấy một bài viết
-     * @param id Id bài viết
-     * @return Tìm thấy
-     */
-    post_Item(id: number): Promise<PostResponse | null>;
-    /**
-     * Xóa một bài viết
-     * @param id Id bài viết
-     * @return Xóa thành công
-     */
-    post_Delete(id: number): Promise<void>;
-}
+export class BaseDataTransfersOfAccountAndAccountSimpleResponse implements IBaseDataTransfersOfAccountAndAccountSimpleResponse {
 
-export class Client implements IClient {
-    private instance: AxiosInstance;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-        this.instance = instance ? instance : axios.create();
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * Lấy danh sách các tài khoản
-     */
-    account_List(): Promise<AccountResponse[] | null> {
-        let url_ = this.baseUrl + "/api/account";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_List(_response);
-        });
-    }
-
-    protected processAccount_List(response: AxiosResponse): Promise<AccountResponse[] | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(AccountResponse.fromJS(item));
-            }
-            return result200;
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AccountResponse[] | null>(<any>null);
-    }
-
-    /**
-     * Chỉnh Sửa thông tin tài khoản
-     * @param account Thông tin tài khoản
-     * @return Thành công
-     */
-    account_Update(account: AccountUpdateRequest): Promise<AccountResponse | null> {
-        let url_ = this.baseUrl + "/api/account";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(account);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "PUT",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_Update(_response);
-        });
-    }
-
-    protected processAccount_Update(response: AxiosResponse): Promise<AccountResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AccountResponse | null>(<any>null);
-    }
-
-    /**
-     * Lấy thông tin của một tài khoản
-     * @param id Id tài khoản
-     * @return Tìm thấy
-     */
-    account_GetById(id: number): Promise<AccountResponse | null> {
-        let url_ = this.baseUrl + "/api/account/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_GetById(_response);
-        });
-    }
-
-    protected processAccount_GetById(response: AxiosResponse): Promise<AccountResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AccountResponse | null>(<any>null);
-    }
-
-    /**
-     * Lấy thông tin tài khoản của chính mình
-     * @return Tìm thấy
-     */
-    account_Me(): Promise<AccountResponse | null> {
-        let url_ = this.baseUrl + "/api/account/me";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_Me(_response);
-        });
-    }
-
-    protected processAccount_Me(response: AxiosResponse): Promise<AccountResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? AccountResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AccountResponse | null>(<any>null);
-    }
-
-    /**
-     * Đổi mật khẩu cho tài khoản
-     * @param request Thông tin mật khẩu
-     * @return Đổi mật khẩu thành công
-     */
-    account_ChangePassword(request: AccountChangePasswordRequest): Promise<void> {
-        let url_ = this.baseUrl + "/api/account/changepassword";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "PATCH",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_ChangePassword(_response);
-        });
-    }
-
-    protected processAccount_ChangePassword(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(<any>null);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(<any>null);
-    }
-
-    /**
-     * Phân quyền, cập nhật quyền
-     * @param request Thông tin tài khoản và quyền mới
-     * @return Đổi mật khẩu thành công
-     */
-    account_UpdateAccess(request: AccountUpdateAccessRequest): Promise<void> {
-        let url_ = this.baseUrl + "/api/account/updateaccess";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "PATCH",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_UpdateAccess(_response);
-        });
-    }
-
-    protected processAccount_UpdateAccess(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(<any>null);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(<any>null);
-    }
-
-    /**
-     * Đăng ký mới một tài khoản
-     * @param account Thông tin tài khoản
-     * @return Thành công
-     */
-    account_Register(account: AccountCreateRequest): Promise<AccountResponse | null> {
-        let url_ = this.baseUrl + "/api/account/register";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(account);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_Register(_response);
-        });
-    }
-
-    protected processAccount_Register(response: AxiosResponse): Promise<AccountResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? AccountResponse.fromJS(resultData201) : <any>null;
-            return result201;
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AccountResponse | null>(<any>null);
-    }
-
-    /**
-     * Đăng nhập
-     * @param account Thông tin đăng nhập
-     * @return Thành công
-     */
-    account_Login(account: AccountLoginRequest): Promise<AccountLoginResponse | null> {
-        let url_ = this.baseUrl + "/api/account/login";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(account);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processAccount_Login(_response);
-        });
-    }
-
-    protected processAccount_Login(response: AxiosResponse): Promise<AccountLoginResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? AccountLoginResponse.fromJS(resultData201) : <any>null;
-            return result201;
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AccountLoginResponse | null>(<any>null);
-    }
-
-    /**
-     * Lấy danh sách các bình luận
-     */
-    comment_Index(): Promise<CommentResponse[] | null> {
-        let url_ = this.baseUrl + "/api/comment";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processComment_Index(_response);
-        });
-    }
-
-    protected processComment_Index(response: AxiosResponse): Promise<CommentResponse[] | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(CommentResponse.fromJS(item));
-            }
-            return result200;
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<CommentResponse[] | null>(<any>null);
-    }
-
-    /**
-     * Đăng một bình luận mới
-     * @param comment Nội dung bình luận
-     * @return Thành công
-     */
-    comment_Create(comment: CommentCreateRequest): Promise<CommentResponse | null> {
-        let url_ = this.baseUrl + "/api/comment";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(comment);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processComment_Create(_response);
-        });
-    }
-
-    protected processComment_Create(response: AxiosResponse): Promise<CommentResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? CommentResponse.fromJS(resultData201) : <any>null;
-            return result201;
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<CommentResponse | null>(<any>null);
-    }
-
-    /**
-     * Sửa một bình luận
-     * @param comment Nội dung bình luận
-     * @return Thành công
-     */
-    comment_Update(comment: CommentUpdateRequest): Promise<CommentResponse | null> {
-        let url_ = this.baseUrl + "/api/comment";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(comment);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "PUT",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processComment_Update(_response);
-        });
-    }
-
-    protected processComment_Update(response: AxiosResponse): Promise<CommentResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? CommentResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<CommentResponse | null>(<any>null);
-    }
-
-    /**
-     * Lấy một bình luận
-     * @param id Id bình luận
-     * @return Tìm thấy
-     */
-    comment_Item(id: number): Promise<CommentResponse | null> {
-        let url_ = this.baseUrl + "/api/comment/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processComment_Item(_response);
-        });
-    }
-
-    protected processComment_Item(response: AxiosResponse): Promise<CommentResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? CommentResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<CommentResponse | null>(<any>null);
-    }
-
-    /**
-     * Xóa một bình luận
-     * @param id Id bình luận
-     * @return Xóa thành công
-     */
-    comment_Delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/api/comment/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "DELETE",
-            url: url_,
-            headers: {
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processComment_Delete(_response);
-        });
-    }
-
-    protected processComment_Delete(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(<any>null);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(<any>null);
-    }
-
-    /**
-     * Lấy danh sách các bài viết
-     */
-    post_Index(): Promise<PostResponse[] | null> {
-        let url_ = this.baseUrl + "/api/post";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processPost_Index(_response);
-        });
-    }
-
-    protected processPost_Index(response: AxiosResponse): Promise<PostResponse[] | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(PostResponse.fromJS(item));
-            }
-            return result200;
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<PostResponse[] | null>(<any>null);
-    }
-
-    /**
-     * Đăng một bài viết mới
-     * @param post Nội dung một bài đăng
-     * @return Thành công
-     */
-    post_Create(post: PostCreateRequest): Promise<PostResponse | null> {
-        let url_ = this.baseUrl + "/api/post";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(post);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processPost_Create(_response);
-        });
-    }
-
-    protected processPost_Create(response: AxiosResponse): Promise<PostResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? PostResponse.fromJS(resultData201) : <any>null;
-            return result201;
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<PostResponse | null>(<any>null);
-    }
-
-    /**
-     * Sửa một bài viết
-     * @param post Nội dung một bài viết
-     * @return Thành công
-     */
-    post_Update(post: PostUpdateRequest): Promise<PostResponse | null> {
-        let url_ = this.baseUrl + "/api/post";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(post);
-
-        let options_ = <AxiosRequestConfig>{
-            data: content_,
-            method: "PUT",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processPost_Update(_response);
-        });
-    }
-
-    protected processPost_Update(response: AxiosResponse): Promise<PostResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = resultData400 ? ErrorResponse.fromJS(resultData400) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result400);
-        } else if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? PostResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<PostResponse | null>(<any>null);
-    }
-
-    /**
-     * Lấy một bài viết
-     * @param id Id bài viết
-     * @return Tìm thấy
-     */
-    post_Item(id: number): Promise<PostResponse | null> {
-        let url_ = this.baseUrl + "/api/post/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processPost_Item(_response);
-        });
-    }
-
-    protected processPost_Item(response: AxiosResponse): Promise<PostResponse | null> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? PostResponse.fromJS(resultData200) : <any>null;
-            return result200;
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<PostResponse | null>(<any>null);
-    }
-
-    /**
-     * Xóa một bài viết
-     * @param id Id bài viết
-     * @return Xóa thành công
-     */
-    post_Delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/api/post/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <AxiosRequestConfig>{
-            method: "DELETE",
-            url: url_,
-            headers: {
-            }
-        };
-
-        return this.instance.request(options_).then((_response: AxiosResponse) => {
-            return this.processPost_Delete(_response);
-        });
-    }
-
-    protected processPost_Delete(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; 
-        if (response.headers && response.headers.forEach) { 
-            response.headers.forEach((v: any, k: any) => _headers[k] = v);
-        };
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(<any>null);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = resultData404 ? ErrorResponse.fromJS(resultData404) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, result404);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(<any>null);
-    }
-}
-
-export class BaseDataTransfersOfAccountAndAccountResponse implements IBaseDataTransfersOfAccountAndAccountResponse {
-
-    constructor(data?: IBaseDataTransfersOfAccountAndAccountResponse) {
+    constructor(data?: IBaseDataTransfersOfAccountAndAccountSimpleResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1020,9 +23,9 @@ export class BaseDataTransfersOfAccountAndAccountResponse implements IBaseDataTr
     init(data?: any) {
     }
 
-    static fromJS(data: any): BaseDataTransfersOfAccountAndAccountResponse {
+    static fromJS(data: any): BaseDataTransfersOfAccountAndAccountSimpleResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new BaseDataTransfersOfAccountAndAccountResponse();
+        let result = new BaseDataTransfersOfAccountAndAccountSimpleResponse();
         result.init(data);
         return result;
     }
@@ -1033,20 +36,17 @@ export class BaseDataTransfersOfAccountAndAccountResponse implements IBaseDataTr
     }
 }
 
-export interface IBaseDataTransfersOfAccountAndAccountResponse {
+export interface IBaseDataTransfersOfAccountAndAccountSimpleResponse {
 }
 
-export class AccountResponse extends BaseDataTransfersOfAccountAndAccountResponse implements IAccountResponse {
+export class AccountSimpleResponse extends BaseDataTransfersOfAccountAndAccountSimpleResponse implements IAccountSimpleResponse {
     id!: number;
-    password!: string;
     name!: string;
     email!: string;
     picture!: string;
     access!: EnumAccess;
-    gender!: EnumGender;
-    joined!: moment.Moment;
 
-    constructor(data?: IAccountResponse) {
+    constructor(data?: IAccountSimpleResponse) {
         super(data);
     }
 
@@ -1054,19 +54,16 @@ export class AccountResponse extends BaseDataTransfersOfAccountAndAccountRespons
         super.init(data);
         if (data) {
             this.id = data["id"] !== undefined ? data["id"] : <any>null;
-            this.password = data["password"] !== undefined ? data["password"] : <any>null;
             this.name = data["name"] !== undefined ? data["name"] : <any>null;
             this.email = data["email"] !== undefined ? data["email"] : <any>null;
             this.picture = data["picture"] !== undefined ? data["picture"] : <any>null;
             this.access = data["access"] !== undefined ? data["access"] : <any>null;
-            this.gender = data["gender"] !== undefined ? data["gender"] : <any>null;
-            this.joined = data["joined"] ? moment.parseZone(data["joined"].toString()) : <any>null;
         }
     }
 
-    static fromJS(data: any): AccountResponse {
+    static fromJS(data: any): AccountSimpleResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new AccountResponse();
+        let result = new AccountSimpleResponse();
         result.init(data);
         return result;
     }
@@ -1074,27 +71,21 @@ export class AccountResponse extends BaseDataTransfersOfAccountAndAccountRespons
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["password"] = this.password !== undefined ? this.password : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["picture"] = this.picture !== undefined ? this.picture : <any>null;
         data["access"] = this.access !== undefined ? this.access : <any>null;
-        data["gender"] = this.gender !== undefined ? this.gender : <any>null;
-        data["joined"] = this.joined ? this.joined.toISOString(true) : <any>null;
         super.toJSON(data);
         return data; 
     }
 }
 
-export interface IAccountResponse extends IBaseDataTransfersOfAccountAndAccountResponse {
+export interface IAccountSimpleResponse extends IBaseDataTransfersOfAccountAndAccountSimpleResponse {
     id: number;
-    password: string;
     name: string;
     email: string;
     picture: string;
     access: EnumAccess;
-    gender: EnumGender;
-    joined: moment.Moment;
 }
 
 export enum EnumAccess {
@@ -1102,12 +93,6 @@ export enum EnumAccess {
     Moderator = "Moderator", 
     NormalUser = "NormalUser", 
     BannedUser = "BannedUser", 
-}
-
-export enum EnumGender {
-    Male = "Male", 
-    Female = "Female", 
-    Unknown = "Unknown", 
 }
 
 export class ErrorResponse implements IErrorResponse {
@@ -1152,6 +137,99 @@ export interface IErrorResponse {
     action?: string | null;
     description?: string | null;
     model?: string | null;
+}
+
+export class BaseDataTransfersOfAccountAndAccountResponse implements IBaseDataTransfersOfAccountAndAccountResponse {
+
+    constructor(data?: IBaseDataTransfersOfAccountAndAccountResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+    }
+
+    static fromJS(data: any): BaseDataTransfersOfAccountAndAccountResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseDataTransfersOfAccountAndAccountResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IBaseDataTransfersOfAccountAndAccountResponse {
+}
+
+export class AccountResponse extends BaseDataTransfersOfAccountAndAccountResponse implements IAccountResponse {
+    id!: number;
+    name!: string;
+    email!: string;
+    picture!: string;
+    access!: EnumAccess;
+    gender!: EnumGender;
+    joined!: string;
+
+    constructor(data?: IAccountResponse) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.id = data["id"] !== undefined ? data["id"] : <any>null;
+            this.name = data["name"] !== undefined ? data["name"] : <any>null;
+            this.email = data["email"] !== undefined ? data["email"] : <any>null;
+            this.picture = data["picture"] !== undefined ? data["picture"] : <any>null;
+            this.access = data["access"] !== undefined ? data["access"] : <any>null;
+            this.gender = data["gender"] !== undefined ? data["gender"] : <any>null;
+            this.joined = data["joined"] !== undefined ? data["joined"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AccountResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new AccountResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["picture"] = this.picture !== undefined ? this.picture : <any>null;
+        data["access"] = this.access !== undefined ? this.access : <any>null;
+        data["gender"] = this.gender !== undefined ? this.gender : <any>null;
+        data["joined"] = this.joined !== undefined ? this.joined : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IAccountResponse extends IBaseDataTransfersOfAccountAndAccountResponse {
+    id: number;
+    name: string;
+    email: string;
+    picture: string;
+    access: EnumAccess;
+    gender: EnumGender;
+    joined: string;
+}
+
+export enum EnumGender {
+    Male = "Male", 
+    Female = "Female", 
+    Unknown = "Unknown", 
 }
 
 export class AccountChangePasswordRequest implements IAccountChangePasswordRequest {
@@ -1340,7 +418,6 @@ export interface IBaseDataTransfersOfAccountAndAccountIdTransfer {
 
 export class AccountIdTransfer extends BaseDataTransfersOfAccountAndAccountIdTransfer implements IAccountIdTransfer {
     id!: number;
-    email!: string;
 
     constructor(data?: IAccountIdTransfer) {
         super(data);
@@ -1350,7 +427,6 @@ export class AccountIdTransfer extends BaseDataTransfersOfAccountAndAccountIdTra
         super.init(data);
         if (data) {
             this.id = data["id"] !== undefined ? data["id"] : <any>null;
-            this.email = data["email"] !== undefined ? data["email"] : <any>null;
         }
     }
 
@@ -1364,7 +440,6 @@ export class AccountIdTransfer extends BaseDataTransfersOfAccountAndAccountIdTra
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["email"] = this.email !== undefined ? this.email : <any>null;
         super.toJSON(data);
         return data; 
     }
@@ -1372,7 +447,6 @@ export class AccountIdTransfer extends BaseDataTransfersOfAccountAndAccountIdTra
 
 export interface IAccountIdTransfer extends IBaseDataTransfersOfAccountAndAccountIdTransfer {
     id: number;
-    email: string;
 }
 
 export class BaseDataTransfersOfAccountAndAccountCreateRequest implements IBaseDataTransfersOfAccountAndAccountCreateRequest {
@@ -1589,14 +663,18 @@ export interface IBaseDataTransfersOfCommentAndCommentResponse {
 
 export class CommentResponse extends BaseDataTransfersOfCommentAndCommentResponse implements ICommentResponse {
     id!: number;
-    content?: string | null;
-    owner?: AccountIdTransfer | null;
-    post?: PostIdTransfer | null;
-    created!: moment.Moment;
-    modified?: moment.Moment | null;
+    content!: string;
+    owner!: AccountSimpleResponse;
+    post!: PostIdTransfer;
+    created!: string;
+    modified?: string | null;
 
     constructor(data?: ICommentResponse) {
         super(data);
+        if (!data) {
+            this.owner = new AccountSimpleResponse();
+            this.post = new PostIdTransfer();
+        }
     }
 
     init(data?: any) {
@@ -1604,10 +682,10 @@ export class CommentResponse extends BaseDataTransfersOfCommentAndCommentRespons
         if (data) {
             this.id = data["id"] !== undefined ? data["id"] : <any>null;
             this.content = data["content"] !== undefined ? data["content"] : <any>null;
-            this.owner = data["owner"] ? AccountIdTransfer.fromJS(data["owner"]) : <any>null;
-            this.post = data["post"] ? PostIdTransfer.fromJS(data["post"]) : <any>null;
-            this.created = data["created"] ? moment.parseZone(data["created"].toString()) : <any>null;
-            this.modified = data["modified"] ? moment.parseZone(data["modified"].toString()) : <any>null;
+            this.owner = data["owner"] ? AccountSimpleResponse.fromJS(data["owner"]) : new AccountSimpleResponse();
+            this.post = data["post"] ? PostIdTransfer.fromJS(data["post"]) : new PostIdTransfer();
+            this.created = data["created"] !== undefined ? data["created"] : <any>null;
+            this.modified = data["modified"] !== undefined ? data["modified"] : <any>null;
         }
     }
 
@@ -1624,8 +702,8 @@ export class CommentResponse extends BaseDataTransfersOfCommentAndCommentRespons
         data["content"] = this.content !== undefined ? this.content : <any>null;
         data["owner"] = this.owner ? this.owner.toJSON() : <any>null;
         data["post"] = this.post ? this.post.toJSON() : <any>null;
-        data["created"] = this.created ? this.created.toISOString(true) : <any>null;
-        data["modified"] = this.modified ? this.modified.toISOString(true) : <any>null;
+        data["created"] = this.created !== undefined ? this.created : <any>null;
+        data["modified"] = this.modified !== undefined ? this.modified : <any>null;
         super.toJSON(data);
         return data; 
     }
@@ -1633,11 +711,11 @@ export class CommentResponse extends BaseDataTransfersOfCommentAndCommentRespons
 
 export interface ICommentResponse extends IBaseDataTransfersOfCommentAndCommentResponse {
     id: number;
-    content?: string | null;
-    owner?: AccountIdTransfer | null;
-    post?: PostIdTransfer | null;
-    created: moment.Moment;
-    modified?: moment.Moment | null;
+    content: string;
+    owner: AccountSimpleResponse;
+    post: PostIdTransfer;
+    created: string;
+    modified?: string | null;
 }
 
 export class BaseDataTransfersOfPostAndPostIdTransfer implements IBaseDataTransfersOfPostAndPostIdTransfer {
@@ -1734,17 +812,20 @@ export interface IBaseDataTransfersOfCommentAndCommentCreateRequest {
 }
 
 export class CommentCreateRequest extends BaseDataTransfersOfCommentAndCommentCreateRequest implements ICommentCreateRequest {
-    post?: PostIdTransfer | null;
-    content?: string | null;
+    post!: PostIdTransfer;
+    content!: string;
 
     constructor(data?: ICommentCreateRequest) {
         super(data);
+        if (!data) {
+            this.post = new PostIdTransfer();
+        }
     }
 
     init(data?: any) {
         super.init(data);
         if (data) {
-            this.post = data["post"] ? PostIdTransfer.fromJS(data["post"]) : <any>null;
+            this.post = data["post"] ? PostIdTransfer.fromJS(data["post"]) : new PostIdTransfer();
             this.content = data["content"] !== undefined ? data["content"] : <any>null;
         }
     }
@@ -1766,8 +847,8 @@ export class CommentCreateRequest extends BaseDataTransfersOfCommentAndCommentCr
 }
 
 export interface ICommentCreateRequest extends IBaseDataTransfersOfCommentAndCommentCreateRequest {
-    post?: PostIdTransfer | null;
-    content?: string | null;
+    post: PostIdTransfer;
+    content: string;
 }
 
 export class BaseDataTransfersOfCommentAndCommentUpdateRequest implements IBaseDataTransfersOfCommentAndCommentUpdateRequest {
@@ -1802,7 +883,7 @@ export interface IBaseDataTransfersOfCommentAndCommentUpdateRequest {
 
 export class CommentUpdateRequest extends BaseDataTransfersOfCommentAndCommentUpdateRequest implements ICommentUpdateRequest {
     id!: number;
-    content?: string | null;
+    content!: string;
 
     constructor(data?: ICommentUpdateRequest) {
         super(data);
@@ -1834,7 +915,82 @@ export class CommentUpdateRequest extends BaseDataTransfersOfCommentAndCommentUp
 
 export interface ICommentUpdateRequest extends IBaseDataTransfersOfCommentAndCommentUpdateRequest {
     id: number;
-    content?: string | null;
+    content: string;
+}
+
+export class BaseDataTransfersOfPostAndPostListResponse implements IBaseDataTransfersOfPostAndPostListResponse {
+
+    constructor(data?: IBaseDataTransfersOfPostAndPostListResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+    }
+
+    static fromJS(data: any): BaseDataTransfersOfPostAndPostListResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseDataTransfersOfPostAndPostListResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IBaseDataTransfersOfPostAndPostListResponse {
+}
+
+export class PostListResponse extends BaseDataTransfersOfPostAndPostListResponse implements IPostListResponse {
+    id!: number;
+    title!: string;
+    cover!: string;
+    content!: string;
+
+    constructor(data?: IPostListResponse) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.id = data["id"] !== undefined ? data["id"] : <any>null;
+            this.title = data["title"] !== undefined ? data["title"] : <any>null;
+            this.cover = data["cover"] !== undefined ? data["cover"] : <any>null;
+            this.content = data["content"] !== undefined ? data["content"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): PostListResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostListResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["cover"] = this.cover !== undefined ? this.cover : <any>null;
+        data["content"] = this.content !== undefined ? this.content : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPostListResponse extends IBaseDataTransfersOfPostAndPostListResponse {
+    id: number;
+    title: string;
+    cover: string;
+    content: string;
 }
 
 export class BaseDataTransfersOfPostAndPostResponse implements IBaseDataTransfersOfPostAndPostResponse {
@@ -1869,15 +1025,20 @@ export interface IBaseDataTransfersOfPostAndPostResponse {
 
 export class PostResponse extends BaseDataTransfersOfPostAndPostResponse implements IPostResponse {
     id!: number;
-    title?: string | null;
-    cover?: string | null;
-    content?: string | null;
-    owner?: AccountIdTransfer | null;
-    created!: moment.Moment;
-    modified?: moment.Moment | null;
+    title!: string;
+    cover!: string;
+    content!: string;
+    owner!: AccountSimpleResponse;
+    created!: string;
+    modified?: string | null;
+    comments!: CommentResponse[];
 
     constructor(data?: IPostResponse) {
         super(data);
+        if (!data) {
+            this.owner = new AccountSimpleResponse();
+            this.comments = [];
+        }
     }
 
     init(data?: any) {
@@ -1887,9 +1048,14 @@ export class PostResponse extends BaseDataTransfersOfPostAndPostResponse impleme
             this.title = data["title"] !== undefined ? data["title"] : <any>null;
             this.cover = data["cover"] !== undefined ? data["cover"] : <any>null;
             this.content = data["content"] !== undefined ? data["content"] : <any>null;
-            this.owner = data["owner"] ? AccountIdTransfer.fromJS(data["owner"]) : <any>null;
-            this.created = data["created"] ? moment.parseZone(data["created"].toString()) : <any>null;
-            this.modified = data["modified"] ? moment.parseZone(data["modified"].toString()) : <any>null;
+            this.owner = data["owner"] ? AccountSimpleResponse.fromJS(data["owner"]) : new AccountSimpleResponse();
+            this.created = data["created"] !== undefined ? data["created"] : <any>null;
+            this.modified = data["modified"] !== undefined ? data["modified"] : <any>null;
+            if (data["comments"] && data["comments"].constructor === Array) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentResponse.fromJS(item));
+            }
         }
     }
 
@@ -1907,8 +1073,13 @@ export class PostResponse extends BaseDataTransfersOfPostAndPostResponse impleme
         data["cover"] = this.cover !== undefined ? this.cover : <any>null;
         data["content"] = this.content !== undefined ? this.content : <any>null;
         data["owner"] = this.owner ? this.owner.toJSON() : <any>null;
-        data["created"] = this.created ? this.created.toISOString(true) : <any>null;
-        data["modified"] = this.modified ? this.modified.toISOString(true) : <any>null;
+        data["created"] = this.created !== undefined ? this.created : <any>null;
+        data["modified"] = this.modified !== undefined ? this.modified : <any>null;
+        if (this.comments && this.comments.constructor === Array) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data; 
     }
@@ -1916,12 +1087,13 @@ export class PostResponse extends BaseDataTransfersOfPostAndPostResponse impleme
 
 export interface IPostResponse extends IBaseDataTransfersOfPostAndPostResponse {
     id: number;
-    title?: string | null;
-    cover?: string | null;
-    content?: string | null;
-    owner?: AccountIdTransfer | null;
-    created: moment.Moment;
-    modified?: moment.Moment | null;
+    title: string;
+    cover: string;
+    content: string;
+    owner: AccountSimpleResponse;
+    created: string;
+    modified?: string | null;
+    comments: CommentResponse[];
 }
 
 export class BaseDataTransfersOfPostAndPostCreateRequest implements IBaseDataTransfersOfPostAndPostCreateRequest {
@@ -1955,9 +1127,9 @@ export interface IBaseDataTransfersOfPostAndPostCreateRequest {
 }
 
 export class PostCreateRequest extends BaseDataTransfersOfPostAndPostCreateRequest implements IPostCreateRequest {
-    title?: string | null;
-    cover?: string | null;
-    content?: string | null;
+    title!: string;
+    cover!: string;
+    content!: string;
 
     constructor(data?: IPostCreateRequest) {
         super(data);
@@ -1990,9 +1162,9 @@ export class PostCreateRequest extends BaseDataTransfersOfPostAndPostCreateReque
 }
 
 export interface IPostCreateRequest extends IBaseDataTransfersOfPostAndPostCreateRequest {
-    title?: string | null;
-    cover?: string | null;
-    content?: string | null;
+    title: string;
+    cover: string;
+    content: string;
 }
 
 export class BaseDataTransfersOfPostAndPostUpdateRequest implements IBaseDataTransfersOfPostAndPostUpdateRequest {
@@ -2027,9 +1199,9 @@ export interface IBaseDataTransfersOfPostAndPostUpdateRequest {
 
 export class PostUpdateRequest extends BaseDataTransfersOfPostAndPostUpdateRequest implements IPostUpdateRequest {
     id!: number;
-    title?: string | null;
-    cover?: string | null;
-    content?: string | null;
+    title!: string;
+    cover!: string;
+    content!: string;
 
     constructor(data?: IPostUpdateRequest) {
         super(data);
@@ -2065,38 +1237,7 @@ export class PostUpdateRequest extends BaseDataTransfersOfPostAndPostUpdateReque
 
 export interface IPostUpdateRequest extends IBaseDataTransfersOfPostAndPostUpdateRequest {
     id: number;
-    title?: string | null;
-    cover?: string | null;
-    content?: string | null;
-}
-
-export class SwaggerException extends Error {
-    message: string;
-    status: number; 
-    response: string; 
-    headers: { [key: string]: any; };
-    result: any; 
-
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
-
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
-
-    protected isSwaggerException = true;
-
-    static isSwaggerException(obj: any): obj is SwaggerException {
-        return obj.isSwaggerException === true;
-    }
-}
-
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
-    if(result !== null && result !== undefined)
-        throw result;
-    else
-        throw new SwaggerException(message, status, response, headers, null);
+    title: string;
+    cover: string;
+    content: string;
 }
