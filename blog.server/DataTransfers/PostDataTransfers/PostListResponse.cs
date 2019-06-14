@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using blog.server.DataTransfers.AccountDataTransfers;
 using blog.server.Models;
 
 namespace blog.server.DataTransfers.PostDataTransfers
 {
-    public class PostUpdateRequest : BaseDataTransfers<Post, PostUpdateRequest>
+    public class PostListResponse : BaseDataTransfers<Post, PostListResponse>
     {
         [Required]
         public int Id { get; set; }

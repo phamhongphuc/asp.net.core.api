@@ -21,9 +21,9 @@ namespace blog.server.Businesses
 
         private static void CheckValid(Comment comment)
         {
-            if (comment.Content.Length < 10)
+            if (comment.Content.Length < 3)
                 throw new Error400BadRequest<Comment>(
-                    "Nội dung bình luận phải có ít nhất 10 kí tự"
+                    "Nội dung bình luận phải có ít nhất 3 kí tự"
                 );
         }
 

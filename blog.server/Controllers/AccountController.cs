@@ -30,8 +30,8 @@ namespace blog.server.Controllers
         [HttpGet]
         [Authorize(Policy = nameof(EnumAccess.Moderator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<AccountResponse>> List()
-            => AccountResponse.List(AccountBusiness.List);
+        public ActionResult<List<AccountSimpleResponse>> List()
+            => AccountSimpleResponse.List(AccountBusiness.List);
 
         /// <summary>
         /// Lấy thông tin của một tài khoản
@@ -71,7 +71,7 @@ namespace blog.server.Controllers
         }
 
         /// <summary>
-        /// Chỉnh Sửa thông tin tài khoản
+        /// Chỉnh Sửa thông tin tài khoản của mình
         /// </summary>
         /// <param name="account">Thông tin tài khoản</param>
         /// <response code="200">Thành công</response>
@@ -82,10 +82,10 @@ namespace blog.server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<AccountResponse>> Update([FromBody] AccountUpdateRequest account)
+        public async Task<ActionResult<AccountSimpleResponse>> Update([FromBody] AccountUpdateRequest account)
         {
             var response = await AccountBusiness.Update(User.Account(), (Account)account);
-            return (AccountResponse)response;
+            return (AccountSimpleResponse)response;
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace blog.server.Controllers
         [HttpPost(nameof(Register))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<AccountResponse>> Register([FromBody] AccountCreateRequest account)
+        public async Task<ActionResult<AccountSimpleResponse>> Register([FromBody] AccountCreateRequest account)
         {
             var response = await AccountBusiness.Register((Account)account);
-            return CreatedAtAction(nameof(Register), (AccountResponse)response);
+            return CreatedAtAction(nameof(Register), (AccountSimpleResponse)response);
         }
 
         /// <summary>
