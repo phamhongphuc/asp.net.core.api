@@ -12,22 +12,11 @@
     text-decoration: line-through;
 }
 
-.table-inner {
-    background-color: $input-bg;
-    box-shadow: $input-box-shadow;
-
-    th,
-    td {
-        border-color: rgba($main, 0.5) !important;
-    }
-}
-
 .table-style {
     cursor: pointer;
 
     th {
         white-space: nowrap;
-        border-bottom-color: $main !important;
     }
 
     th,
