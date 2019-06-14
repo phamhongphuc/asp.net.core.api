@@ -1,5 +1,5 @@
 <template>
-    <span class="icon">{{ icon }}</span>
+    <span class="icon" @click="$emit('click')">{{ icon }}</span>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator';

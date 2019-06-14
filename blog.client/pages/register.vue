@@ -45,7 +45,7 @@
                 <b-col>
                     <b-input-
                         v-model="input.name"
-                        name="username"
+                        name="name"
                         type="text"
                         placeholder="Tên hiển thị"
                         icon="user"
@@ -57,26 +57,38 @@
                         icon="droplet"
                         :options="genderOptions"
                     />
+                    <b-input-
+                        v-model="input.picture"
+                        name="picture"
+                        type="text"
+                        placeholder="Đường dẫn ảnh đại diện"
+                        icon="image"
+                        class="circle bg-white"
+                    />
                 </b-col>
             </b-form-row>
             <b-button variant="main" class="circle" block type="submit">
                 Đăng ký
             </b-button>
+            <div class="text-center">
+                Đã có tài khoản?
+                <router-link to="/login">
+                    <b>
+                        Đăng nhập
+                    </b>
+                </router-link>
+            </div>
         </div>
     </b-form>
 </template>
 <script lang="ts">
-import { Component, namespace, mixins } from 'nuxt-property-decorator';
+import { Component, namespace, Vue } from 'nuxt-property-decorator';
 import { IAccountCreateRequest, EnumGender } from '~/types/rest';
-import { tryCatch } from '~/modules/error-handling';
-import { DataMixin } from '~/components/mixins/data';
 
 @Component({
     name: 'register-',
 })
-export default class extends mixins<{ tryCatch: typeof tryCatch }>(
-    DataMixin({ tryCatch }),
-) {
+export default class extends Vue {
     newPassword = '';
 
     input: IAccountCreateRequest = {
@@ -106,15 +118,14 @@ export default class extends mixins<{ tryCatch: typeof tryCatch }>(
         return 'center';
     }
 
-    async submit() {
-        this.tryCatch({
+    submit() {
+        this.$tryCatch({
             handle: () => this.register(this.input),
             success: { message: 'Đăng ký thành công' },
-            fail: { message: 'Đăng ký không thành công' },
         });
     }
 
-    @(namespace('user').Action)
+    @(namespace('auth').Action)
     register;
 }
 </script>

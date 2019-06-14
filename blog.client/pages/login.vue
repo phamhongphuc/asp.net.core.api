@@ -38,16 +38,13 @@
     </b-form>
 </template>
 <script lang="ts">
-import { Component, namespace, mixins } from 'nuxt-property-decorator';
-import { IAccountLoginRequest } from '../types/rest';
-import { DataMixin } from '~/components/mixins/data';
-import { tryCatch } from '~/modules/error-handling';
+import { Component, namespace, Vue } from 'nuxt-property-decorator';
+import { IAccountLoginRequest } from '~/types/rest';
+
 @Component({
     name: 'login-',
 })
-export default class extends mixins<{ tryCatch: typeof tryCatch }>(
-    DataMixin({ tryCatch }),
-) {
+export default class extends Vue {
     layout() {
         return 'center';
     }
@@ -57,14 +54,13 @@ export default class extends mixins<{ tryCatch: typeof tryCatch }>(
         password: '',
     };
 
-    @(namespace('user').Action)
+    @(namespace('auth').Action)
     login;
 
-    async submit() {
-        this.tryCatch({
+    submit() {
+        this.$tryCatch({
             handle: () => this.login(this.input),
             success: { message: 'Đăng nhập thành công' },
-            fail: { message: 'Đăng nhập không thành công' },
         });
     }
 }

@@ -1,6 +1,8 @@
 <template>
     <div>
         <header- />
-        <nuxt />
+        <div class="container py-3">
+            <nuxt />
+        </div>
     </div>
 </template>
