@@ -3,16 +3,17 @@ import cookie from 'cookie';
 import { Store } from 'vuex';
 import { RootState } from '~/store';
 
-const publicRoutes = ['login', 'register'];
+const anonymousOnlyRoutes = ['login', 'register'];
 
 export default async function({
     req,
     store,
     redirect,
     route,
-}: Context & { store: Store<RootState> }): Promise<void> {
+    app: { $axios },
+}: { store: Store<RootState> } & Context): Promise<void> {
     function checkAndRedirect(): void {
-        if (!publicRoutes.includes(route.name || '')) redirect('/login');
+        if (!anonymousOnlyRoutes.includes(route.name || '')) redirect('/login');
     }
 
     if (process.server) {
@@ -22,13 +23,20 @@ export default async function({
 
         const token = cookie.parse(headers.cookie)['token'];
         const isUserLoggedIn = await store.dispatch(
-            'user/serverGetUserProfile',
+            'auth/serverGetUserProfile',
             token,
         );
+        $axios.setToken(token, 'Bearer');
         if (!isUserLoggedIn) return checkAndRedirect();
-        else if (route.name === 'login') redirect('/');
+        else if (anonymousOnlyRoutes.includes(route.name || '')) redirect('/');
     } else {
-        const profile = (store.state as RootState).user.profile;
+        const profile = (store.state as RootState).auth.profile;
         if (!profile) return checkAndRedirect();
+        else {
+            $axios.setToken(
+                (store as Store<RootState>).state.auth.token,
+                'Bearer',
+            );
+        }
     }
 }
