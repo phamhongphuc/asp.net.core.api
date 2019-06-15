@@ -120,7 +120,7 @@ namespace blog.server
 
             app.UseMiddleware<ExceptionCatcherMiddleware>();
 
-            app.UseSwagger();
+            app.UseOpenApi();
             app.UseSwaggerUi3(config => { config.WithCredentials = true; });
             app.UseReDoc(config => config.Path = "/redoc");
 

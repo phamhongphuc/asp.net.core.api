@@ -1,8 +1,8 @@
 ﻿{
   "runtime": "NetCore22",
   "defaultVariables": null,
-  "swaggerGenerator": {
-    "aspNetCoreToSwagger": {
+  "documentGenerator": {
+    "aspNetCoreToOpenApi": {
       "project": "blog.server.csproj",
       "msBuildProjectExtensionsPath": null,
       "configuration": null,
@@ -15,6 +15,7 @@
       "apiGroupNames": null,
       "defaultPropertyNameHandling": "Default",
       "defaultReferenceTypeNullHandling": "Null",
+      "defaultDictionaryValueReferenceTypeNullHandling": "NotNull",
       "defaultResponseReferenceTypeNullHandling": "Null",
       "defaultEnumHandling": "Integer",
       "flattenInheritanceHierarchy": false,
@@ -54,7 +55,7 @@
     }
   },
   "codeGenerators": {
-    "swaggerToTypeScriptClient": {
+    "openApiToTypeScriptClient": {
       "className": "{controller}Client",
       "moduleName": "",
       "namespace": "",
@@ -72,6 +73,7 @@
       "generateOptionalParameters": true,
       "exportTypes": true,
       "wrapDtoExceptions": false,
+      "exceptionClass": "SwaggerException",
       "clientBaseClass": null,
       "wrapResponses": false,
       "wrapResponseMethods": [],
@@ -100,6 +102,7 @@
       "baseUrlTokenName": "API_BASE_URL",
       "queryNullValue": "",
       "inlineNamedDictionaries": false,
+      "inlineNamedAny": false,
       "templateDirectory": null,
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,

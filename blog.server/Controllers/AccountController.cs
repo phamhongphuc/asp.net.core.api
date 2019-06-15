@@ -17,7 +17,7 @@ namespace blog.server.Controllers
     /// <summary>
     /// Account Controller
     /// </summary>
-    [SwaggerTag(
+    [OpenApiTag(
         "Account",
         Description = "Quản lý hành động của tài khoản"
     )]

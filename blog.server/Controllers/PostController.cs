@@ -17,7 +17,7 @@ namespace blog.server.Controllers
     /// <summary>
     /// Post Controller
     /// </summary>
-    [SwaggerTag(
+    [OpenApiTag(
         "Post",
         Description = "Quản lý hành động của đối tượng bài đăng"
     )]
