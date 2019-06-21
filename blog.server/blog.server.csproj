@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.0.2" />
     <PackageReference Include="NSwag.MSBuild" Version="13.0.2" />
-    <PackageReference Include="Realm" Version="3.4.0" />
+    <PackageReference Include="Realm" Version="4.0.0" />
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build">
