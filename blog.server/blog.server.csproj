@@ -15,7 +15,7 @@
     <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.0.6" />
-    <PackageReference Include="NSwag.MSBuild" Version="13.0.5" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.0.6" />
     <PackageReference Include="Realm" Version="3.4.0" />
   </ItemGroup>
 
