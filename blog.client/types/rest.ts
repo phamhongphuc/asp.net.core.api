@@ -125,50 +125,6 @@ export class BaseDataTransfersOfAccountAndAccountSimpleResponse implements IBase
 export interface IBaseDataTransfersOfAccountAndAccountSimpleResponse {
 }
 
-export class ErrorResponse implements IErrorResponse {
-    action?: string | null;
-    description?: string | null;
-    model?: string | null;
-
-    constructor(data?: IErrorResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.action = data["action"] !== undefined ? data["action"] : <any>null;
-            this.description = data["description"] !== undefined ? data["description"] : <any>null;
-            this.model = data["model"] !== undefined ? data["model"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ErrorResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new ErrorResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["action"] = this.action !== undefined ? this.action : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["model"] = this.model !== undefined ? this.model : <any>null;
-        return data; 
-    }
-}
-
-export interface IErrorResponse {
-    action?: string | null;
-    description?: string | null;
-    model?: string | null;
-}
-
 export class Anonymous2 implements IAnonymous2 {
     id!: number;
     name!: string;
@@ -290,6 +246,50 @@ export class BaseDataTransfersOfAccountAndAccountResponse implements IBaseDataTr
 }
 
 export interface IBaseDataTransfersOfAccountAndAccountResponse {
+}
+
+export class ErrorResponse implements IErrorResponse {
+    action?: string | null;
+    description?: string | null;
+    model?: string | null;
+
+    constructor(data?: IErrorResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.action = data["action"] !== undefined ? data["action"] : <any>null;
+            this.description = data["description"] !== undefined ? data["description"] : <any>null;
+            this.model = data["model"] !== undefined ? data["model"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ErrorResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ErrorResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["action"] = this.action !== undefined ? this.action : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["model"] = this.model !== undefined ? this.model : <any>null;
+        return data; 
+    }
+}
+
+export interface IErrorResponse {
+    action?: string | null;
+    description?: string | null;
+    model?: string | null;
 }
 
 export class AccountChangePasswordRequest implements IAccountChangePasswordRequest {

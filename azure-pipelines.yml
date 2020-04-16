@@ -14,7 +14,7 @@ variables:
 jobs:
   - job: DotNetCore
     pool:
-      vmImage: "ubuntu-16.04"
+      vmImage: "ubuntu-latest"
     steps:
       - task: RestoreAndSaveCache@1
         displayName: "[Cache] Restore artifact based on: $(key_file)"
@@ -22,30 +22,37 @@ jobs:
           keyfile: $(key_file)
           targetfolder: "$(target_folder)"
           vstsFeed: $(dotnet_core_artifacts)
+        condition: ne(variables['CacheRestored'], 'true')
 
       - script: |
           mkdir -p $(obj_cache)
           mkdir -p $(obj_project)
-          cp $(obj_cache)/* $(obj_project)/ || true
+          cp -R $(obj_cache)/* $(obj_project)/ || true
+          ls -R $(obj_cache)
+          ls -R $(obj_project)
         displayName: "[Copy] Copy from cache"
 
       - script: dotnet --info
         displayName: "[Server] dotnet --info"
-
+      
       - script: dotnet restore
+        condition: ne(variables['CacheRestored'], 'true')
         displayName: "[Server] Dotnet restore"
 
+      - script: dotnet build --no-restore
+        displayName: "[Server] dotnet build"
+      
       - script: |
           mkdir -p $(obj_cache)
           mkdir -p $(obj_project)
           cp $(obj_project)/* $(obj_cache)/ || true
+          ls -R $(obj_cache)
+          ls -R $(obj_project)
         displayName: "[Copy] Copy to cache"
 
-      - script: dotnet build --no-restore
-        displayName: "[Server] dotnet build"
   - job: NodeJS
     pool:
-      vmImage: "ubuntu-16.04"
+      vmImage: "ubuntu-latest"
     steps:
       - task: RestoreAndSaveCache@1
         displayName: "[Cache] Restore artifact based on: yarn.lock"
