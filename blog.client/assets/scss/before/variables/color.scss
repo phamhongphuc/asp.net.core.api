@@ -1,0 +1,41 @@
+// Use Lab ( x , 0 , -9 )
+$body-bg: #f2f2f2;
+$body-color: lighten(#212529, 25%);
+
+$main: #4398d1;
+
+$black: black;
+$white: white;
+
+$dark: #181e2a;
+$light: #717786;
+
+$blue: #507af2;
+$dark-blue: #9abeff;
+$gray: #f5f6fa;
+$green: #c2f2d7;
+$light-blue: #bde7ff;
+$light-red: #f39190;
+
+$orange: #f39c12;
+$red: #eb4d4b;
+
+$theme-colors: (
+    'main': $main,
+    'black': $black,
+    'white': $white,
+    'dark': $dark,
+    'light': $light,
+    'blue': $blue,
+    'dark-blue': $dark-blue,
+    'gray': $gray,
+    'green': $green,
+    'light-blue': $light-blue,
+    'light-red': $light-red,
+    'orange': $orange,
+    'red': $red,
+);
+
+$link-color: inherit;
+$link-hover-color: inherit;
+$input-bg: rgba($black, 0.1);

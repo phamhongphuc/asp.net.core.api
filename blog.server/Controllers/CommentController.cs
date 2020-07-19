@@ -17,7 +17,7 @@ namespace blog.server.Controllers
     /// <summary>
     /// Comment Controller
     /// </summary>
-    [SwaggerTag(
+    [OpenApiTag(
         "Comment",
         Description = "Quản lý hành động của đối tượng bình luận"
     )]

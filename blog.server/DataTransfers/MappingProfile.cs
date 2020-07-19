@@ -19,6 +19,7 @@ namespace blog.server.DataTransfers
         private void MappingPost()
         {
             CreateMap<Post, PostResponse>();
+            CreateMap<Post, PostListResponse>();
             CreateMap<Post, PostIdTransfer>().ReverseMap();
             CreateMap<PostCreateRequest, Post>();
             CreateMap<PostUpdateRequest, Post>();
@@ -34,6 +35,7 @@ namespace blog.server.DataTransfers
         private void MappingAccount()
         {
             CreateMap<Account, AccountResponse>();
+            CreateMap<Account, AccountSimpleResponse>();
             CreateMap<Account, AccountIdTransfer>().ReverseMap();
             CreateMap<AccountLoginRequest, Account>();
             CreateMap<AccountCreateRequest, Account>();

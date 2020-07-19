@@ -1,0 +1,9 @@
+footer {
+    &.footer-light {
+        color: $footer-light-color;
+        a:hover {
+            color: $footer-light-hover-color;
+            text-decoration: none;
+        }
+    }
+}

@@ -12,10 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="NSwag.AspNetCore" Version="12.2.3" />
-    <PackageReference Include="Realm" Version="3.4.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.6.0" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.5.0" />
+    <PackageReference Include="Realm" Version="4.3.0" />
   </ItemGroup>
 
+  <Target Name="NSwag" AfterTargets="Build">
+    <Copy SourceFiles="@(ReferencePath)" DestinationFolder="$(OutDir)References" />
+    <Exec Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration),OutDir=$(OutDir)" />
+    <RemoveDir Directories="$(OutDir)References" />
+  </Target>
 </Project>

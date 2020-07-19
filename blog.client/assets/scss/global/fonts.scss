@@ -1,0 +1,12 @@
+@font-face {
+    font-weight: normal;
+    font-family: 'ai-web-font';
+    font-style: normal;
+    src: url('../fonts/aicon.ttf') format('truetype'),
+        url('../fonts/aicon.woff') format('woff'),
+        url('../fonts/aicon.svg#ai-web-font') format('svg');
+}
+
+.icon {
+    @include icon;
+}
