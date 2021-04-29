@@ -1,0 +1,77 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "22:00"
+  open-pull-requests-limit: 10
+  target-branch: dev
+  ignore:
+  - dependency-name: Realm
+    versions:
+    - 10.0.1
+    - 10.1.0
+    - 10.1.1
+    - 10.1.2
+    - 5.1.2
+  - dependency-name: NSwag.MSBuild
+    versions:
+    - 13.10.1
+    - 13.10.2
+    - 13.10.3
+    - 13.10.4
+    - 13.10.5
+    - 13.10.6
+    - 13.10.7
+    - 13.10.8
+  - dependency-name: NSwag.AspNetCore
+    versions:
+    - 13.10.1
+    - 13.10.2
+    - 13.10.3
+    - 13.10.4
+    - 13.10.5
+    - 13.10.6
+    - 13.10.7
+    - 13.10.8
+- package-ecosystem: npm
+  directory: "/blog.client"
+  schedule:
+    interval: daily
+    time: "22:00"
+  open-pull-requests-limit: 10
+  target-branch: dev
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: npm
+    versions:
+    - 6.14.11
+    - 6.14.12
+  - dependency-name: nuxt
+    versions:
+    - 2.14.12
+    - 2.15.0
+    - 2.15.1
+    - 2.15.2
+    - 2.15.3
+  - dependency-name: typescript
+    versions:
+    - 4.1.3
+    - 4.1.4
+    - 4.1.5
+    - 4.2.2
+    - 4.2.3
+  - dependency-name: "@nuxtjs/axios"
+    versions:
+    - 5.12.5
+    - 5.13.0
+  - dependency-name: eslint-import-resolver-typescript
+    versions:
+    - 2.3.0
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
